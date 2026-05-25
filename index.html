@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Employees Union Member Checker</title>
+
+<!-- SheetJS -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- AutoTable -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    min-height:100vh;
+    padding:20px;
+    color:white;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.title{
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#cbd5e1;
+    margin-bottom:30px;
+}
+
+.upload-box{
+    background:rgba(255,255,255,0.06);
+    padding:20px;
+    border-radius:18px;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:10px;
+    font-weight:bold;
+    font-size:15px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#f1f5f9;
+    margin-bottom:20px;
+}
+
+button{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#2563eb,#06b6d4);
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.02);
+}
+
+.result-box{
+    margin-top:25px;
+    display:none;
+}
+
+.card{
+    background:rgba(255,255,255,0.08);
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+.count{
+    font-size:26px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.download-btn{
+    margin-top:15px;
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#94a3b8;
+    font-size:13px;
+}
+
+.loading{
+    text-align:center;
+    margin-top:20px;
+    display:none;
+    font-size:18px;
+}
+
+@media(max-width:600px){
+
+.title{
+    font-size:24px;
+}
+
+button{
+    font-size:16px;
+}
+
+.count{
+    font-size:22px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="title">
+Employees Union Member Checker
+</div>
+
+<div class="subtitle">
+Compare Monthly Union Member XLSX Files
+</div>
+
+<div class="upload-box">
+
+<label>Upload OLD Month XLSX File</label>
+<input type="file" id="oldFile" accept=".xlsx">
+
+<label>Upload NEW Month XLSX File</label>
+<input type="file" id="newFile" accept=".xlsx">
+
+<button onclick="compareFiles()">
+Compare Files
+</button>
+
+</div>
+
+<div class="loading" id="loading">
+Processing Files...
+</div>
+
+<div class="result-box" id="resultBox">
+
+<div class="card">
+<h2>Removed Employees</h2>
+<div class="count" id="removedCount">0</div>
+
+<button class="download-btn" onclick="downloadRemovedPDF()">
+Download Removed PDF
+</button>
+</div>
+
+<div class="card">
+<h2>New Employees Added</h2>
+<div class="count" id="addedCount">0</div>
+
+<button class="download-btn" onclick="downloadAddedPDF()">
+Download Added PDF
+</button>
+</div>
+
+</div>
+
+<div class="footer">
+NF Railway Employees Union
+</div>
+
+</div>
+
+<script>
+
+let removedEmployees = [];
+let addedEmployees = [];
+
+async function readExcel(file){
+
+    return new Promise((resolve,reject)=>{
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            const data = new Uint8Array(e.target.result);
+
+            const workbook = XLSX.read(data,{type:'array'});
+
+            const sheetName = workbook.SheetNames[0];
+
+            const worksheet = workbook.Sheets[sheetName];
+
+            const json = XLSX.utils.sheet_to_json(worksheet,{
+                header:1
+            });
+
+            resolve(json);
+
+        };
+
+        reader.onerror = reject;
+
+        reader.readAsArrayBuffer(file);
+
+    });
+
+}
+
+async function compareFiles(){
+
+    const oldFile = document.getElementById('oldFile').files[0];
+    const newFile = document.getElementById('newFile').files[0];
+
+    if(!oldFile || !newFile){
+
+        alert("Please upload both XLSX files");
+
+        return;
+    }
+
+    document.getElementById('loading').style.display='block';
+
+    const oldData = await readExcel(oldFile);
+    const newData = await readExcel(newFile);
+
+    const oldMap = new Map();
+    const newMap = new Map();
+
+    oldData.forEach(row=>{
+
+        const empNo = row[5];
+        const empName = row[6];
+
+        if(empNo && empName){
+
+            oldMap.set(String(empNo).trim(),{
+                empNo:String(empNo).trim(),
+                empName:String(empName).trim()
+            });
+
+        }
+
+    });
+
+    newData.forEach(row=>{
+
+        const empNo = row[5];
+        const empName = row[6];
+
+        if(empNo && empName){
+
+            newMap.set(String(empNo).trim(),{
+                empNo:String(empNo).trim(),
+                empName:String(empName).trim()
+            });
+
+        }
+
+    });
+
+    removedEmployees = [];
+    addedEmployees = [];
+
+    oldMap.forEach((value,key)=>{
+
+        if(!newMap.has(key)){
+
+            removedEmployees.push(value);
+
+        }
+
+    });
+
+    newMap.forEach((value,key)=>{
+
+        if(!oldMap.has(key)){
+
+            addedEmployees.push(value);
+
+        }
+
+    });
+
+    removedEmployees.sort((a,b)=>
+        a.empName.localeCompare(b.empName)
+    );
+
+    addedEmployees.sort((a,b)=>
+        a.empName.localeCompare(b.empName)
+    );
+
+    document.getElementById('removedCount').innerText =
+        removedEmployees.length;
+
+    document.getElementById('addedCount').innerText =
+        addedEmployees.length;
+
+    document.getElementById('loading').style.display='none';
+
+    document.getElementById('resultBox').style.display='block';
+
+}
+
+function generatePDF(title,data,fileName){
+
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+
+    doc.text(title,14,20);
+
+    doc.setFontSize(12);
+
+    doc.text("Total Number: " + data.length,14,30);
+
+    const tableData = data.map(emp=>[
+        emp.empName,
+        emp.empNo
+    ]);
+
+    doc.autoTable({
+
+        head:[['Employee Name','Employee Number']],
+        body:tableData,
+        startY:40,
+        styles:{
+            fontSize:10
+        },
+        headStyles:{
+            fillColor:[37,99,235]
+        }
+
+    });
+
+    doc.save(fileName);
+
+}
+
+function downloadRemovedPDF(){
+
+    generatePDF(
+        "Employees Union Member List - Removed Employees",
+        removedEmployees,
+        "Removed_Employees.pdf"
+    );
+
+}
+
+function downloadAddedPDF(){
+
+    generatePDF(
+        "Employees Union Member List - New Employees Added",
+        addedEmployees,
+        "New_Employees_Added.pdf"
+    );
+
+}
+
+</script>
+
+</body>
+</html>
