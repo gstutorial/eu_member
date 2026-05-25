@@ -504,6 +504,23 @@ id="resultBox">
 
 <h2>
 
+Current Total Members
+
+</h2>
+
+<div class="count"
+id="totalMembers">
+
+0
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>
+
 Removed Employees
 
 </h2>
@@ -642,8 +659,9 @@ async function compareFiles(){
 
     }
 
-    document.getElementById('loading')
-    .style.display='block';
+    document.getElementById(
+    'loading'
+    ).style.display='block';
 
     const oldData =
     await readExcel(oldFile);
@@ -760,6 +778,11 @@ async function compareFiles(){
     addedEmployees.length;
 
     document.getElementById(
+    'totalMembers'
+    ).innerText =
+    newMap.size;
+
+    document.getElementById(
     'loading'
     ).style.display='none';
 
@@ -788,31 +811,78 @@ fileName
 
     logo.onload = function(){
 
+        /* LOGO */
+
         doc.addImage(
             logo,
             'JPEG',
-            80,
-            8,
-            50,
-            50
+            12,
+            10,
+            28,
+            28
         );
 
-        doc.setFontSize(18);
+        /* HEADER */
+
+        doc.setFontSize(20);
+
+        doc.setTextColor(20,20,20);
+
+        doc.text(
+            "Employees Union",
+            50,
+            18
+        );
+
+        doc.setFontSize(16);
+
+        doc.setTextColor(60,60,60);
+
+        doc.text(
+            "N.F. Railway",
+            50,
+            28
+        );
+
+        /* LINE */
+
+        doc.setDrawColor(37,99,235);
+
+        doc.setLineWidth(1);
+
+        doc.line(
+            12,
+            42,
+            198,
+            42
+        );
+
+        /* TITLE */
+
+        doc.setFontSize(16);
+
+        doc.setTextColor(37,99,235);
 
         doc.text(
             title,
             14,
-            70
+            52
         );
 
+        /* TOTAL */
+
         doc.setFontSize(12);
+
+        doc.setTextColor(0,0,0);
 
         doc.text(
             "Total Number: "
             + data.length,
             14,
-            80
+            62
         );
+
+        /* TABLE */
 
         const tableData =
         data.map(emp=>[
@@ -829,19 +899,29 @@ fileName
 
             body:tableData,
 
-            startY:90,
+            startY:70,
 
             styles:{
-                fontSize:10
+                fontSize:10,
+                cellPadding:3
             },
 
             headStyles:{
-                fillColor:[37,99,235]
+                fillColor:[37,99,235],
+                fontSize:11
+            },
+
+            alternateRowStyles:{
+                fillColor:[240,245,255]
             }
 
         });
 
+        /* FOOTER */
+
         doc.setFontSize(10);
+
+        doc.setTextColor(100);
 
         doc.text(
 
@@ -864,7 +944,7 @@ function downloadRemovedPDF(){
 
     generatePDF(
 
-        "Employees Union Member List - Removed Employees",
+        "Removed Members List",
 
         removedEmployees,
 
@@ -878,7 +958,7 @@ function downloadAddedPDF(){
 
     generatePDF(
 
-        "Employees Union Member List - New Employees Added",
+        "Newly Added Members List",
 
         addedEmployees,
 
