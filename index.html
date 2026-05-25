@@ -4,9 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Employees Union Member Checker</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Employees Union Member Checker
+</title>
 
 <!-- SheetJS -->
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -20,9 +24,11 @@
 <style>
 
 *{
+
     margin:0;
     padding:0;
     box-sizing:border-box;
+
 }
 
 body{
@@ -30,7 +36,11 @@ body{
     font-family:Arial,sans-serif;
 
     background:
-    linear-gradient(135deg,#0f172a,#1e293b);
+    linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+    );
 
     min-height:100vh;
 
@@ -46,7 +56,8 @@ body{
 
     margin:auto;
 
-    background:rgba(255,255,255,0.08);
+    background:
+    rgba(255,255,255,0.08);
 
     backdrop-filter:blur(14px);
 
@@ -54,7 +65,8 @@ body{
 
     padding:25px;
 
-    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+    box-shadow:
+    0 10px 40px rgba(0,0,0,0.4);
 
 }
 
@@ -80,7 +92,8 @@ body{
 
     padding:8px;
 
-    box-shadow:0 5px 20px rgba(0,0,0,0.3);
+    box-shadow:
+    0 5px 20px rgba(0,0,0,0.3);
 
 }
 
@@ -110,7 +123,8 @@ body{
 
 .upload-box{
 
-    background:rgba(255,255,255,0.07);
+    background:
+    rgba(255,255,255,0.07);
 
     padding:20px;
 
@@ -120,7 +134,13 @@ body{
 
 }
 
-label{
+.file-upload{
+
+    margin-bottom:22px;
+
+}
+
+.upload-label{
 
     display:block;
 
@@ -132,21 +152,81 @@ label{
 
 }
 
-input{
+.custom-upload{
 
-    width:100%;
+    display:block;
 
-    padding:14px;
+    cursor:pointer;
 
-    border:none;
+}
 
-    border-radius:14px;
+.custom-upload input{
 
-    background:#f1f5f9;
+    display:none;
 
-    margin-bottom:22px;
+}
 
-    font-size:15px;
+.upload-ui{
+
+    background:#f8fafc;
+
+    border:2px dashed #94a3b8;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    text-align:center;
+
+    transition:0.3s;
+
+}
+
+.upload-ui:hover{
+
+    border-color:#2563eb;
+
+    transform:scale(1.01);
+
+}
+
+.upload-icon{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+}
+
+.upload-text{
+
+    color:#0f172a;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    margin-bottom:10px;
+
+}
+
+.file-name{
+
+    color:#475569;
+
+    font-size:14px;
+
+    word-break:break-word;
+
+    margin-top:8px;
+
+}
+
+.file-success{
+
+    border-color:#16a34a !important;
+
+    background:#dcfce7 !important;
 
 }
 
@@ -161,7 +241,11 @@ button{
     border-radius:15px;
 
     background:
-    linear-gradient(135deg,#2563eb,#06b6d4);
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #06b6d4
+    );
 
     color:white;
 
@@ -191,7 +275,8 @@ button:hover{
 
 .card{
 
-    background:rgba(255,255,255,0.08);
+    background:
+    rgba(255,255,255,0.08);
 
     border-radius:20px;
 
@@ -222,7 +307,11 @@ button:hover{
 .download-btn{
 
     background:
-    linear-gradient(135deg,#16a34a,#22c55e);
+    linear-gradient(
+    135deg,
+    #16a34a,
+    #22c55e
+    );
 
 }
 
@@ -289,44 +378,123 @@ button{
 <div class="container">
 
 <div class="logo-container">
-<img src="logo.jpg" class="logo">
+
+<img src="logo.jpg"
+class="logo">
+
 </div>
 
 <div class="title">
+
 Employees Union Member Checker
+
 </div>
 
 <div class="subtitle">
+
 Compare Monthly Union Member XLSX Files
+
 </div>
 
 <div class="upload-box">
 
-<label>
-Upload OLD Month XLSX File
+<div class="file-upload">
+
+<label class="upload-label">
+
+OLD Month XLSX File
+
 </label>
+
+<label class="custom-upload">
 
 <input type="file"
 id="oldFile"
-accept=".xlsx">
+accept=".xlsx"
+onchange="showFileName(this,'oldFileName')">
 
-<label>
-Upload NEW Month XLSX File
+<div class="upload-ui">
+
+<div class="upload-icon">
+
+📁
+
+</div>
+
+<div class="upload-text">
+
+Tap to Upload Old File
+
+</div>
+
+<div class="file-name"
+id="oldFileName">
+
+No file selected
+
+</div>
+
+</div>
+
 </label>
+
+</div>
+
+<div class="file-upload">
+
+<label class="upload-label">
+
+NEW Month XLSX File
+
+</label>
+
+<label class="custom-upload">
 
 <input type="file"
 id="newFile"
-accept=".xlsx">
+accept=".xlsx"
+onchange="showFileName(this,'newFileName')">
+
+<div class="upload-ui">
+
+<div class="upload-icon">
+
+📄
+
+</div>
+
+<div class="upload-text">
+
+Tap to Upload New File
+
+</div>
+
+<div class="file-name"
+id="newFileName">
+
+No file selected
+
+</div>
+
+</div>
+
+</label>
+
+</div>
 
 <button onclick="compareFiles()">
+
 Compare Files
+
 </button>
 
 </div>
 
 <div class="loading"
 id="loading">
+
 Processing Files...
+
 </div>
 
 <div class="result-box"
@@ -335,12 +503,16 @@ id="resultBox">
 <div class="card">
 
 <h2>
+
 Removed Employees
+
 </h2>
 
 <div class="count"
 id="removedCount">
+
 0
+
 </div>
 
 <button class="download-btn"
@@ -355,12 +527,16 @@ Download Removed PDF
 <div class="card">
 
 <h2>
+
 New Employees Added
+
 </h2>
 
 <div class="count"
 id="addedCount">
+
 0
+
 </div>
 
 <button class="download-btn"
@@ -391,6 +567,24 @@ App Created By Gobind Sharma
 let removedEmployees = [];
 
 let addedEmployees = [];
+
+function showFileName(input,id){
+
+    const fileName =
+    document.getElementById(id);
+
+    if(input.files.length > 0){
+
+        fileName.innerHTML =
+        "✅ " + input.files[0].name;
+
+        input.parentElement
+        .querySelector('.upload-ui')
+        .classList.add('file-success');
+
+    }
+
+}
 
 async function readExcel(file){
 
@@ -440,7 +634,9 @@ async function compareFiles(){
 
     if(!oldFile || !newFile){
 
-        alert("Please upload both XLSX files");
+        alert(
+        "Please upload both XLSX files"
+        );
 
         return;
 
@@ -468,11 +664,19 @@ async function compareFiles(){
         if(empNo && empName){
 
             oldMap.set(
+
                 String(empNo).trim(),
+
                 {
-                    empNo:String(empNo).trim(),
-                    empName:String(empName).trim()
+
+                    empNo:
+                    String(empNo).trim(),
+
+                    empName:
+                    String(empName).trim()
+
                 }
+
             );
 
         }
@@ -488,11 +692,19 @@ async function compareFiles(){
         if(empNo && empName){
 
             newMap.set(
+
                 String(empNo).trim(),
+
                 {
-                    empNo:String(empNo).trim(),
-                    empName:String(empName).trim()
+
+                    empNo:
+                    String(empNo).trim(),
+
+                    empName:
+                    String(empName).trim()
+
                 }
+
             );
 
         }
@@ -524,34 +736,53 @@ async function compareFiles(){
     });
 
     removedEmployees.sort((a,b)=>
-        a.empName.localeCompare(b.empName)
+
+        a.empName.localeCompare(
+        b.empName)
+
     );
 
     addedEmployees.sort((a,b)=>
-        a.empName.localeCompare(b.empName)
+
+        a.empName.localeCompare(
+        b.empName)
+
     );
 
-    document.getElementById('removedCount')
-    .innerText = removedEmployees.length;
+    document.getElementById(
+    'removedCount'
+    ).innerText =
+    removedEmployees.length;
 
-    document.getElementById('addedCount')
-    .innerText = addedEmployees.length;
+    document.getElementById(
+    'addedCount'
+    ).innerText =
+    addedEmployees.length;
 
-    document.getElementById('loading')
-    .style.display='none';
+    document.getElementById(
+    'loading'
+    ).style.display='none';
 
-    document.getElementById('resultBox')
-    .style.display='block';
+    document.getElementById(
+    'resultBox'
+    ).style.display='block';
 
 }
 
-function generatePDF(title,data,fileName){
+function generatePDF(
+title,
+data,
+fileName
+){
 
-    const { jsPDF } = window.jspdf;
+    const { jsPDF } =
+    window.jspdf;
 
-    const doc = new jsPDF();
+    const doc =
+    new jsPDF();
 
-    const logo = new Image();
+    const logo =
+    new Image();
 
     logo.src = "logo.jpg";
 
@@ -568,29 +799,33 @@ function generatePDF(title,data,fileName){
 
         doc.setFontSize(18);
 
-        doc.text(title,14,70);
+        doc.text(
+            title,
+            14,
+            70
+        );
 
         doc.setFontSize(12);
 
         doc.text(
-            "Total Number: " + data.length,
+            "Total Number: "
+            + data.length,
             14,
             80
         );
 
-        const tableData = data.map(emp=>[
+        const tableData =
+        data.map(emp=>[
             emp.empName,
             emp.empNo
         ]);
 
         doc.autoTable({
 
-            head:[
-                [
-                    'Employee Name',
-                    'Employee Number'
-                ]
-            ],
+            head:[[
+                'Employee Name',
+                'Employee Number'
+            ]],
 
             body:tableData,
 
@@ -609,9 +844,14 @@ function generatePDF(title,data,fileName){
         doc.setFontSize(10);
 
         doc.text(
+
             "App Created By Gobind Sharma",
+
             14,
-            doc.internal.pageSize.height - 10
+
+            doc.internal
+            .pageSize.height - 10
+
         );
 
         doc.save(fileName);
@@ -651,4 +891,5 @@ function downloadAddedPDF(){
 </script>
 
 </body>
+
 </html>
