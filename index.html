@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -24,135 +26,271 @@
 }
 
 body{
-    font-family:Arial, sans-serif;
-    background:linear-gradient(135deg,#0f172a,#1e293b);
+
+    font-family:Arial,sans-serif;
+
+    background:
+    linear-gradient(135deg,#0f172a,#1e293b);
+
     min-height:100vh;
+
     padding:20px;
+
     color:white;
+
 }
 
 .container{
+
     max-width:700px;
+
     margin:auto;
+
     background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(12px);
-    border-radius:25px;
+
+    backdrop-filter:blur(14px);
+
+    border-radius:28px;
+
     padding:25px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+
+}
+
+.logo-container{
+
+    text-align:center;
+
+    margin-bottom:15px;
+
+}
+
+.logo{
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:contain;
+
+    border-radius:50%;
+
+    background:white;
+
+    padding:8px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,0.3);
+
 }
 
 .title{
+
     text-align:center;
+
     font-size:30px;
+
     font-weight:bold;
-    margin-bottom:10px;
+
+    margin-bottom:8px;
+
 }
 
 .subtitle{
+
     text-align:center;
+
     color:#cbd5e1;
+
     margin-bottom:30px;
+
+    font-size:15px;
+
 }
 
 .upload-box{
-    background:rgba(255,255,255,0.06);
+
+    background:rgba(255,255,255,0.07);
+
     padding:20px;
-    border-radius:18px;
+
+    border-radius:20px;
+
     margin-bottom:20px;
+
 }
 
 label{
+
     display:block;
+
     margin-bottom:10px;
+
     font-weight:bold;
+
     font-size:15px;
+
 }
 
 input{
+
     width:100%;
+
     padding:14px;
+
     border:none;
-    border-radius:12px;
+
+    border-radius:14px;
+
     background:#f1f5f9;
-    margin-bottom:20px;
+
+    margin-bottom:22px;
+
+    font-size:15px;
+
 }
 
 button{
+
     width:100%;
+
     padding:16px;
+
     border:none;
-    border-radius:14px;
-    background:linear-gradient(135deg,#2563eb,#06b6d4);
+
+    border-radius:15px;
+
+    background:
+    linear-gradient(135deg,#2563eb,#06b6d4);
+
     color:white;
+
     font-size:18px;
+
     font-weight:bold;
+
     cursor:pointer;
+
     transition:0.3s;
+
 }
 
 button:hover{
+
     transform:scale(1.02);
+
 }
 
 .result-box{
+
     margin-top:25px;
+
     display:none;
+
 }
 
 .card{
+
     background:rgba(255,255,255,0.08);
-    border-radius:18px;
-    padding:18px;
-    margin-bottom:15px;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    margin-bottom:18px;
+
+}
+
+.card h2{
+
+    margin-bottom:10px;
+
 }
 
 .count{
-    font-size:26px;
+
+    font-size:32px;
+
     font-weight:bold;
+
     margin-top:10px;
+
+    margin-bottom:15px;
+
 }
 
 .download-btn{
-    margin-top:15px;
-    background:linear-gradient(135deg,#16a34a,#22c55e);
-}
 
-.footer{
-    text-align:center;
-    margin-top:25px;
-    color:#94a3b8;
-    font-size:13px;
+    background:
+    linear-gradient(135deg,#16a34a,#22c55e);
+
 }
 
 .loading{
+
     text-align:center;
+
     margin-top:20px;
+
     display:none;
+
     font-size:18px;
+
+}
+
+.footer{
+
+    text-align:center;
+
+    margin-top:30px;
+
+    color:#cbd5e1;
+
+    font-size:13px;
+
 }
 
 @media(max-width:600px){
 
 .title{
+
     font-size:24px;
+
 }
 
 button{
+
     font-size:16px;
+
 }
 
 .count{
-    font-size:22px;
+
+    font-size:24px;
+
+}
+
+.logo{
+
+    width:90px;
+
+    height:90px;
+
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
+
+<div class="logo-container">
+<img src="logo.jpg" class="logo">
+</div>
 
 <div class="title">
 Employees Union Member Checker
@@ -164,11 +302,21 @@ Compare Monthly Union Member XLSX Files
 
 <div class="upload-box">
 
-<label>Upload OLD Month XLSX File</label>
-<input type="file" id="oldFile" accept=".xlsx">
+<label>
+Upload OLD Month XLSX File
+</label>
 
-<label>Upload NEW Month XLSX File</label>
-<input type="file" id="newFile" accept=".xlsx">
+<input type="file"
+id="oldFile"
+accept=".xlsx">
+
+<label>
+Upload NEW Month XLSX File
+</label>
+
+<input type="file"
+id="newFile"
+accept=".xlsx">
 
 <button onclick="compareFiles()">
 Compare Files
@@ -176,34 +324,64 @@ Compare Files
 
 </div>
 
-<div class="loading" id="loading">
+<div class="loading"
+id="loading">
 Processing Files...
 </div>
 
-<div class="result-box" id="resultBox">
+<div class="result-box"
+id="resultBox">
 
 <div class="card">
-<h2>Removed Employees</h2>
-<div class="count" id="removedCount">0</div>
 
-<button class="download-btn" onclick="downloadRemovedPDF()">
+<h2>
+Removed Employees
+</h2>
+
+<div class="count"
+id="removedCount">
+0
+</div>
+
+<button class="download-btn"
+onclick="downloadRemovedPDF()">
+
 Download Removed PDF
+
 </button>
+
 </div>
 
 <div class="card">
-<h2>New Employees Added</h2>
-<div class="count" id="addedCount">0</div>
 
-<button class="download-btn" onclick="downloadAddedPDF()">
+<h2>
+New Employees Added
+</h2>
+
+<div class="count"
+id="addedCount">
+0
+</div>
+
+<button class="download-btn"
+onclick="downloadAddedPDF()">
+
 Download Added PDF
+
 </button>
+
 </div>
 
 </div>
 
 <div class="footer">
+
 NF Railway Employees Union
+
+<br><br>
+
+App Created By Gobind Sharma
+
 </div>
 
 </div>
@@ -211,6 +389,7 @@ NF Railway Employees Union
 <script>
 
 let removedEmployees = [];
+
 let addedEmployees = [];
 
 async function readExcel(file){
@@ -221,17 +400,23 @@ async function readExcel(file){
 
         reader.onload = function(e){
 
-            const data = new Uint8Array(e.target.result);
+            const data =
+            new Uint8Array(e.target.result);
 
-            const workbook = XLSX.read(data,{type:'array'});
+            const workbook =
+            XLSX.read(data,{type:'array'});
 
-            const sheetName = workbook.SheetNames[0];
+            const sheetName =
+            workbook.SheetNames[0];
 
-            const worksheet = workbook.Sheets[sheetName];
+            const worksheet =
+            workbook.Sheets[sheetName];
 
-            const json = XLSX.utils.sheet_to_json(worksheet,{
-                header:1
-            });
+            const json =
+            XLSX.utils.sheet_to_json(
+                worksheet,
+                {header:1}
+            );
 
             resolve(json);
 
@@ -247,35 +432,48 @@ async function readExcel(file){
 
 async function compareFiles(){
 
-    const oldFile = document.getElementById('oldFile').files[0];
-    const newFile = document.getElementById('newFile').files[0];
+    const oldFile =
+    document.getElementById('oldFile').files[0];
+
+    const newFile =
+    document.getElementById('newFile').files[0];
 
     if(!oldFile || !newFile){
 
         alert("Please upload both XLSX files");
 
         return;
+
     }
 
-    document.getElementById('loading').style.display='block';
+    document.getElementById('loading')
+    .style.display='block';
 
-    const oldData = await readExcel(oldFile);
-    const newData = await readExcel(newFile);
+    const oldData =
+    await readExcel(oldFile);
+
+    const newData =
+    await readExcel(newFile);
 
     const oldMap = new Map();
+
     const newMap = new Map();
 
     oldData.forEach(row=>{
 
         const empNo = row[5];
+
         const empName = row[6];
 
         if(empNo && empName){
 
-            oldMap.set(String(empNo).trim(),{
-                empNo:String(empNo).trim(),
-                empName:String(empName).trim()
-            });
+            oldMap.set(
+                String(empNo).trim(),
+                {
+                    empNo:String(empNo).trim(),
+                    empName:String(empName).trim()
+                }
+            );
 
         }
 
@@ -284,20 +482,25 @@ async function compareFiles(){
     newData.forEach(row=>{
 
         const empNo = row[5];
+
         const empName = row[6];
 
         if(empNo && empName){
 
-            newMap.set(String(empNo).trim(),{
-                empNo:String(empNo).trim(),
-                empName:String(empName).trim()
-            });
+            newMap.set(
+                String(empNo).trim(),
+                {
+                    empNo:String(empNo).trim(),
+                    empName:String(empName).trim()
+                }
+            );
 
         }
 
     });
 
     removedEmployees = [];
+
     addedEmployees = [];
 
     oldMap.forEach((value,key)=>{
@@ -328,15 +531,17 @@ async function compareFiles(){
         a.empName.localeCompare(b.empName)
     );
 
-    document.getElementById('removedCount').innerText =
-        removedEmployees.length;
+    document.getElementById('removedCount')
+    .innerText = removedEmployees.length;
 
-    document.getElementById('addedCount').innerText =
-        addedEmployees.length;
+    document.getElementById('addedCount')
+    .innerText = addedEmployees.length;
 
-    document.getElementById('loading').style.display='none';
+    document.getElementById('loading')
+    .style.display='none';
 
-    document.getElementById('resultBox').style.display='block';
+    document.getElementById('resultBox')
+    .style.display='block';
 
 }
 
@@ -346,43 +551,85 @@ function generatePDF(title,data,fileName){
 
     const doc = new jsPDF();
 
-    doc.setFontSize(18);
+    const logo = new Image();
 
-    doc.text(title,14,20);
+    logo.src = "logo.jpg";
 
-    doc.setFontSize(12);
+    logo.onload = function(){
 
-    doc.text("Total Number: " + data.length,14,30);
+        doc.addImage(
+            logo,
+            'JPEG',
+            80,
+            8,
+            50,
+            50
+        );
 
-    const tableData = data.map(emp=>[
-        emp.empName,
-        emp.empNo
-    ]);
+        doc.setFontSize(18);
 
-    doc.autoTable({
+        doc.text(title,14,70);
 
-        head:[['Employee Name','Employee Number']],
-        body:tableData,
-        startY:40,
-        styles:{
-            fontSize:10
-        },
-        headStyles:{
-            fillColor:[37,99,235]
-        }
+        doc.setFontSize(12);
 
-    });
+        doc.text(
+            "Total Number: " + data.length,
+            14,
+            80
+        );
 
-    doc.save(fileName);
+        const tableData = data.map(emp=>[
+            emp.empName,
+            emp.empNo
+        ]);
+
+        doc.autoTable({
+
+            head:[
+                [
+                    'Employee Name',
+                    'Employee Number'
+                ]
+            ],
+
+            body:tableData,
+
+            startY:90,
+
+            styles:{
+                fontSize:10
+            },
+
+            headStyles:{
+                fillColor:[37,99,235]
+            }
+
+        });
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "App Created By Gobind Sharma",
+            14,
+            doc.internal.pageSize.height - 10
+        );
+
+        doc.save(fileName);
+
+    };
 
 }
 
 function downloadRemovedPDF(){
 
     generatePDF(
+
         "Employees Union Member List - Removed Employees",
+
         removedEmployees,
+
         "Removed_Employees.pdf"
+
     );
 
 }
@@ -390,9 +637,13 @@ function downloadRemovedPDF(){
 function downloadAddedPDF(){
 
     generatePDF(
+
         "Employees Union Member List - New Employees Added",
+
         addedEmployees,
+
         "New_Employees_Added.pdf"
+
     );
 
 }
