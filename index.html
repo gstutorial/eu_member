@@ -12,14 +12,20 @@ content="width=device-width, initial-scale=1.0">
 Employees Union Member Checker
 </title>
 
-<!-- SheetJS -->
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 
-<!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- AutoTable -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<link rel="manifest"
+href="manifest.json">
+
+<meta name="theme-color"
+content="#2563eb">
+
+<link rel="apple-touch-icon"
+href="logo.png">
 
 <style>
 
@@ -31,19 +37,20 @@ Employees Union Member Checker
 
 body{
 
-    font-family:Arial,sans-serif;
+    font-family:
+    Arial,sans-serif;
 
     background:
-    linear-gradient(
-    135deg,
-    #020617,
-    #0f172a,
-    #1e293b
+    radial-gradient(
+    circle at top,
+    #1e3a8a 0%,
+    #0f172a 40%,
+    #020617 100%
     );
 
     min-height:100vh;
 
-    padding:8px;
+    padding:10px;
 
     color:white;
 
@@ -53,24 +60,28 @@ body{
 
     width:100%;
 
-    position:relative;
+    max-width:650px;
 
-    overflow:hidden;
+    margin:auto;
 
     background:
-    rgba(255,255,255,0.08);
+    linear-gradient(
+    135deg,
+    rgba(255,255,255,0.10),
+    rgba(255,255,255,0.04)
+    );
 
-    backdrop-filter:blur(18px);
+    border-radius:34px;
 
-    border-radius:26px;
+    padding:20px;
 
-    padding:18px;
+    border:
+    1px solid rgba(255,255,255,0.10);
+
+    backdrop-filter:blur(20px);
 
     box-shadow:
     0 15px 50px rgba(0,0,0,0.45);
-
-    border:
-    1px solid rgba(255,255,255,0.08);
 
 }
 
@@ -84,20 +95,16 @@ body{
 
 .logo{
 
-    width:88px;
+    width:110px;
 
-    height:88px;
+    height:110px;
 
     object-fit:contain;
 
     border-radius:50%;
 
-    display:block;
-
-    margin:auto;
-
     box-shadow:
-    0 5px 20px rgba(0,0,0,0.35);
+    0 10px 30px rgba(0,0,0,0.40);
 
 }
 
@@ -105,11 +112,13 @@ body{
 
     text-align:center;
 
-    font-size:25px;
+    font-size:30px;
 
-    font-weight:bold;
+    font-weight:800;
 
-    margin-bottom:4px;
+    line-height:1.2;
+
+    margin-top:8px;
 
 }
 
@@ -119,40 +128,40 @@ body{
 
     color:#cbd5e1;
 
-    margin-bottom:18px;
+    font-size:15px;
 
-    font-size:13px;
+    margin-top:10px;
+
+    margin-bottom:20px;
 
 }
 
 .upload-box{
 
     background:
-    rgba(255,255,255,0.07);
+    rgba(255,255,255,0.06);
 
-    padding:16px;
+    border-radius:26px;
 
-    border-radius:20px;
-
-    margin-bottom:15px;
+    padding:18px;
 
 }
 
 .file-upload{
 
-    margin-bottom:16px;
+    margin-bottom:18px;
 
 }
 
 .upload-label{
 
-    display:block;
-
-    margin-bottom:8px;
+    font-size:15px;
 
     font-weight:bold;
 
-    font-size:14px;
+    margin-bottom:10px;
+
+    display:block;
 
 }
 
@@ -172,13 +181,19 @@ body{
 
 .upload-ui{
 
-    background:#f8fafc;
+    background:
+    linear-gradient(
+    135deg,
+    #ecfdf5,
+    #d1fae5
+    );
 
-    border:2px dashed #94a3b8;
+    border:
+    3px dashed #22c55e;
 
-    border-radius:18px;
+    border-radius:30px;
 
-    padding:18px;
+    padding:26px 15px;
 
     text-align:center;
 
@@ -194,9 +209,9 @@ body{
 
 .upload-icon{
 
-    font-size:32px;
+    font-size:48px;
 
-    margin-bottom:6px;
+    margin-bottom:10px;
 
 }
 
@@ -204,11 +219,11 @@ body{
 
     color:#0f172a;
 
-    font-weight:bold;
+    font-size:18px;
 
-    font-size:14px;
+    font-weight:700;
 
-    margin-bottom:6px;
+    margin-bottom:10px;
 
 }
 
@@ -216,9 +231,9 @@ body{
 
     color:#475569;
 
-    font-size:12px;
+    font-size:14px;
 
-    word-break:break-word;
+    font-weight:600;
 
 }
 
@@ -226,19 +241,24 @@ body{
 
     border-color:#16a34a !important;
 
-    background:#dcfce7 !important;
+    background:
+    linear-gradient(
+    135deg,
+    #dcfce7,
+    #bbf7d0
+    ) !important;
 
 }
 
-button{
+.compare-btn{
 
     width:100%;
 
-    padding:14px;
-
     border:none;
 
-    border-radius:16px;
+    border-radius:22px;
+
+    padding:18px;
 
     background:
     linear-gradient(
@@ -249,19 +269,14 @@ button{
 
     color:white;
 
-    font-size:15px;
+    font-size:19px;
 
-    font-weight:bold;
+    font-weight:800;
 
     cursor:pointer;
 
-    transition:0.3s;
-
-}
-
-button:hover{
-
-    transform:translateY(-1px);
+    box-shadow:
+    0 10px 25px rgba(37,99,235,0.35);
 
 }
 
@@ -271,9 +286,9 @@ button:hover{
 
     display:none;
 
-    grid-template-columns:1fr;
+    flex-direction:column;
 
-    gap:12px;
+    gap:16px;
 
 }
 
@@ -286,36 +301,98 @@ button:hover{
     rgba(255,255,255,0.05)
     );
 
-    border-radius:18px;
+    border-radius:28px;
 
-    padding:16px;
+    padding:20px;
 
     border:
-    1px solid rgba(255,255,255,0.08);
+    1px solid rgba(255,255,255,0.10);
 
-    text-align:center;
+    box-shadow:
+    0 8px 25px rgba(0,0,0,0.20);
 
 }
 
-.card h2{
+.card-header{
 
-    margin-bottom:6px;
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:12px;
+
+}
+
+.card-icon{
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:30px;
+
+    color:white;
+
+    font-weight:bold;
+
+}
+
+.blue{
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #60a5fa
+    );
+}
+
+.red{
+    background:
+    linear-gradient(
+    135deg,
+    #dc2626,
+    #ef4444
+    );
+}
+
+.green{
+    background:
+    linear-gradient(
+    135deg,
+    #16a34a,
+    #4ade80
+    );
+}
+
+.card-title{
 
     font-size:18px;
+
+    font-weight:700;
 
 }
 
 .count{
 
-    font-size:34px;
+    font-size:52px;
 
-    font-weight:bold;
-
-    margin-top:6px;
-
-    margin-bottom:12px;
+    font-weight:900;
 
     color:#38bdf8;
+
+    margin-left:78px;
+
+    margin-bottom:18px;
 
 }
 
@@ -323,13 +400,19 @@ button:hover{
 
     display:flex;
 
-    gap:10px;
+    gap:12px;
 
 }
 
 .download-btn{
 
     flex:1;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:15px;
 
     background:
     linear-gradient(
@@ -338,13 +421,11 @@ button:hover{
     #22c55e
     );
 
-}
+    color:white;
 
-.share-btn{
+    font-size:18px;
 
-    width:62px;
-
-    min-width:62px;
+    font-weight:800;
 
     display:flex;
 
@@ -352,40 +433,62 @@ button:hover{
 
     justify-content:center;
 
-    background:white;
+    gap:10px;
 
-    border:none;
-
-    border-radius:16px;
-
-    padding:0;
-
-    overflow:hidden;
+    cursor:pointer;
 
     box-shadow:
-    0 5px 18px rgba(0,0,0,0.25);
+    0 8px 20px rgba(34,197,94,0.35);
 
 }
 
-.share-icon{
+.share-btn{
 
-    width:100%;
+    width:140px;
 
-    height:100%;
+    border:none;
 
-    object-fit:cover;
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #38bdf8
+    );
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:800;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 8px 20px rgba(59,130,246,0.35);
 
 }
 
 .loading{
 
-    text-align:center;
-
-    margin-top:15px;
-
     display:none;
 
-    font-size:16px;
+    text-align:center;
+
+    margin-top:18px;
+
+    font-size:18px;
+
+    font-weight:700;
 
 }
 
@@ -393,13 +496,13 @@ button:hover{
 
     text-align:center;
 
-    margin-top:18px;
+    margin-top:24px;
 
     color:#cbd5e1;
 
-    font-size:12px;
+    font-size:13px;
 
-    line-height:1.6;
+    line-height:1.7;
 
 }
 
@@ -407,7 +510,7 @@ button:hover{
 
     position:fixed;
 
-    top:22px;
+    top:20px;
 
     left:50%;
 
@@ -420,72 +523,46 @@ button:hover{
     #1f2937
     );
 
-    color:white;
-
     padding:16px 22px;
 
     border-radius:18px;
 
-    font-size:14px;
+    color:white;
 
-    font-weight:600;
+    font-weight:700;
 
-    z-index:999999;
+    z-index:9999;
 
     display:none;
 
     min-width:280px;
 
-    max-width:90%;
-
     text-align:center;
 
     box-shadow:
-    0 15px 40px rgba(0,0,0,0.45);
-
-    border:
-    1px solid rgba(255,255,255,0.12);
-
-    backdrop-filter:blur(14px);
-
-    animation:toastSlide 0.35s ease;
+    0 10px 35px rgba(0,0,0,0.40);
 
 }
 
-@keyframes toastSlide{
+@media(max-width:600px){
 
-    from{
+    .button-row{
 
-        opacity:0;
-
-        transform:
-        translateX(-50%)
-        translateY(-25px);
+        flex-direction:row;
 
     }
 
-    to{
+    .share-btn{
 
-        opacity:1;
+        width:120px;
 
-        transform:
-        translateX(-50%)
-        translateY(0);
+        font-size:16px;
 
     }
 
 }
 
 </style>
-
-<link rel="manifest"
-href="manifest.json">
-
-<meta name="theme-color"
-content="#2563eb">
-
-<link rel="apple-touch-icon"
-href="logo.png">
 
 </head>
 
@@ -531,7 +608,9 @@ onchange="showFileName(this,'oldFileName')">
 
 <div class="upload-ui">
 
-<div class="upload-icon">📁</div>
+<div class="upload-icon">
+📁
+</div>
 
 <div class="upload-text">
 Tap to Upload Old File
@@ -565,7 +644,9 @@ onchange="showFileName(this,'newFileName')">
 
 <div class="upload-ui">
 
-<div class="upload-icon">📄</div>
+<div class="upload-icon">
+📄
+</div>
 
 <div class="upload-text">
 Tap to Upload New File
@@ -582,9 +663,10 @@ No file selected
 
 </div>
 
-<button onclick="compareFiles()">
+<button class="compare-btn"
+onclick="compareFiles()">
 
-Compare Files
+📑 Compare Files
 
 </button>
 
@@ -602,9 +684,17 @@ id="resultBox">
 
 <div class="card">
 
-<h2>
+<div class="card-header">
+
+<div class="card-icon blue">
+👥
+</div>
+
+<div class="card-title">
 Current Total Members
-</h2>
+</div>
+
+</div>
 
 <div class="count"
 id="totalMembers">
@@ -615,9 +705,17 @@ id="totalMembers">
 
 <div class="card">
 
-<h2>
+<div class="card-header">
+
+<div class="card-icon red">
+➖
+</div>
+
+<div class="card-title">
 Removed Employees
-</h2>
+</div>
+
+</div>
 
 <div class="count"
 id="removedCount">
@@ -629,15 +727,14 @@ id="removedCount">
 <button class="download-btn"
 onclick="downloadRemovedPDF()">
 
-⬇ Download PDF
+⬇ Download
 
 </button>
 
 <button class="share-btn"
 onclick="shareRemovedPDF()">
 
-<img src="1000210033.png"
-class="share-icon">
+🔗 Share
 
 </button>
 
@@ -647,9 +744,18 @@ class="share-icon">
 
 <div class="card">
 
-<h2>
+<div class="card-header">
+
+<div class="card-icon green">
+➕
+
+</div>
+
+<div class="card-title">
 New Employees Added
-</h2>
+</div>
+
+</div>
 
 <div class="count"
 id="addedCount">
@@ -661,15 +767,14 @@ id="addedCount">
 <button class="download-btn"
 onclick="downloadAddedPDF()">
 
-⬇ Download PDF
+⬇ Download
 
 </button>
 
 <button class="share-btn"
 onclick="shareAddedPDF()">
 
-<img src="1000210033.png"
-class="share-icon">
+🔗 Share
 
 </button>
 
@@ -887,19 +992,14 @@ async function compareFiles(){
     getMonthValue(newFile.name);
 
     if(
-
     oldMonthValue &&
     newMonthValue &&
     oldMonthValue > newMonthValue
-
     ){
 
         showToast(
-
         "⚠️ Wrong File Order! Upload older month first.",
-
         "error"
-
         );
 
         return;
@@ -977,7 +1077,9 @@ async function compareFiles(){
     oldMap.forEach((value,key)=>{
 
         if(!newMap.has(key)){
+
             removedEmployees.push(value);
+
         }
 
     });
@@ -985,7 +1087,9 @@ async function compareFiles(){
     newMap.forEach((value,key)=>{
 
         if(!oldMap.has(key)){
+
             addedEmployees.push(value);
+
         }
 
     });
@@ -1011,7 +1115,7 @@ async function compareFiles(){
 
     document.getElementById(
     'resultBox'
-    ).style.display='grid';
+    ).style.display='flex';
 
     showToast(
     '✅ Files compared successfully',
@@ -1040,96 +1144,111 @@ data
 
         logo.onload = function(){
 
+            doc.setFillColor(
+            37,99,235
+            );
+
+            doc.rect(
+            0,0,210,40,'F'
+            );
+
             doc.addImage(
                 logo,
                 'PNG',
-                15,
                 12,
-                28,
-                28
+                7,
+                22,
+                22
             );
+
+            doc.setTextColor(
+            255,255,255
+            );
+
+            doc.setFontSize(24);
 
             doc.setFont(
             "helvetica",
             "bold"
             );
 
-            doc.setFontSize(28);
+            doc.text(
+                "Employees Union",
+                42,
+                18
+            );
+
+            doc.setFontSize(17);
+
+            doc.text(
+                "N.F. Railway",
+                42,
+                29
+            );
+
+            doc.setFillColor(
+            248,250,252
+            );
+
+            doc.roundedRect(
+                14,
+                52,
+                182,
+                28,
+                4,
+                4,
+                'F'
+            );
+
+            doc.setDrawColor(
+            220,220,220
+            );
+
+            doc.roundedRect(
+                14,
+                52,
+                182,
+                28,
+                4,
+                4
+            );
+
+            doc.setTextColor(
+            37,99,235
+            );
+
+            doc.setFontSize(20);
+
+            doc.text(
+                title,
+                105,
+                63,
+                {align:'center'}
+            );
+
+            doc.setFontSize(13);
 
             doc.setTextColor(
             15,23,42
             );
 
             doc.text(
-                "Employees Union",
-                105,
-                22,
-                {align:'center'}
-            );
-
-            doc.setFontSize(20);
-
-            doc.setTextColor(
-            37,99,235
-            );
-
-            doc.text(
-                "N.F. Railway",
-                105,
-                33,
-                {align:'center'}
-            );
-
-            doc.setDrawColor(
-            37,99,235
-            );
-
-            doc.setLineWidth(1);
-
-            doc.line(
-                12,
-                45,
-                198,
-                45
-            );
-
-            doc.setFontSize(21);
-
-            doc.setTextColor(
-            37,99,235
-            );
-
-            doc.text(
-                title,
-                105,
-                58,
-                {align:'center'}
-            );
-
-            doc.setFontSize(14);
-
-            doc.setTextColor(
-            0,0,0
-            );
-
-            doc.text(
                 "Month: " +
                 latestMonthName,
-                105,
-                68,
-                {align:'center'}
+                45,
+                74
             );
 
             doc.text(
-                "Total Members: "
-                + data.length,
-                105,
-                78,
-                {align:'center'}
+                "Total Members: " +
+                data.length,
+                130,
+                74
             );
 
             const tableData =
-            data.map(emp=>[
+            data.map((emp,index)=>[
+                index + 1,
                 emp.empName,
                 emp.empNo
             ]);
@@ -1137,6 +1256,7 @@ data
             doc.autoTable({
 
                 head:[[
+                    'S.No.',
                     'Employee Name',
                     'Employee Number'
                 ]],
@@ -1147,40 +1267,50 @@ data
 
                 styles:{
                     fontSize:10,
-                    cellPadding:4,
-                    halign:'left',
-                    valign:'middle'
+                    cellPadding:5,
+                    halign:'left'
                 },
 
                 headStyles:{
                     fillColor:[37,99,235],
-                    halign:'left',
-                    valign:'middle',
                     textColor:[255,255,255],
                     fontStyle:'bold'
                 },
 
                 alternateRowStyles:{
-                    fillColor:[240,245,255]
+                    fillColor:[245,247,250]
                 }
 
             });
 
+            doc.setFillColor(
+            37,99,235
+            );
+
+            doc.rect(
+            0,
+            285,
+            210,
+            12,
+            'F'
+            );
+
             doc.setFontSize(10);
 
-            doc.setTextColor(100);
+            doc.setTextColor(
+            255,255,255
+            );
 
             doc.text(
+                "NF Railway Employees Union",
+                14,
+                292
+            );
 
+            doc.text(
                 "App Created By Gobind Sharma",
-
-                105,
-
-                doc.internal
-                .pageSize.height - 10,
-
-                {align:'center'}
-
+                140,
+                292
             );
 
             const blob =
@@ -1195,17 +1325,6 @@ data
 }
 
 async function downloadRemovedPDF(){
-
-    if(removedEmployees.length === 0){
-
-        showToast(
-        "No removed employees found",
-        "error"
-        );
-
-        return;
-
-    }
 
     const blob =
     await createPDFBlob(
@@ -1226,28 +1345,11 @@ async function downloadRemovedPDF(){
     latestMonthName +
     ".pdf";
 
-    document.body.appendChild(a);
-
     a.click();
-
-    document.body.removeChild(a);
-
-    URL.revokeObjectURL(url);
 
 }
 
 async function downloadAddedPDF(){
-
-    if(addedEmployees.length === 0){
-
-        showToast(
-        "No new employees found",
-        "error"
-        );
-
-        return;
-
-    }
 
     const blob =
     await createPDFBlob(
@@ -1268,28 +1370,11 @@ async function downloadAddedPDF(){
     latestMonthName +
     ".pdf";
 
-    document.body.appendChild(a);
-
     a.click();
-
-    document.body.removeChild(a);
-
-    URL.revokeObjectURL(url);
 
 }
 
 async function shareRemovedPDF(){
-
-    if(removedEmployees.length === 0){
-
-        showToast(
-        "No removed employees found",
-        "error"
-        );
-
-        return;
-
-    }
 
     const blob =
     await createPDFBlob(
@@ -1313,7 +1398,7 @@ async function shareRemovedPDF(){
     navigator.canShare({files:[file]})
     ){
 
-        await navigator.share({
+        navigator.share({
 
             files:[file],
 
@@ -1324,29 +1409,9 @@ async function shareRemovedPDF(){
 
     }
 
-    else{
-
-        showToast(
-        "Sharing not supported on this device",
-        "error"
-        );
-
-    }
-
 }
 
 async function shareAddedPDF(){
-
-    if(addedEmployees.length === 0){
-
-        showToast(
-        "No new employees found",
-        "error"
-        );
-
-        return;
-
-    }
 
     const blob =
     await createPDFBlob(
@@ -1370,7 +1435,7 @@ async function shareAddedPDF(){
     navigator.canShare({files:[file]})
     ){
 
-        await navigator.share({
+        navigator.share({
 
             files:[file],
 
@@ -1380,26 +1445,6 @@ async function shareAddedPDF(){
         });
 
     }
-
-    else{
-
-        showToast(
-        "Sharing not supported on this device",
-        "error"
-        );
-
-    }
-
-}
-
-</script>
-
-<script>
-
-if('serviceWorker' in navigator){
-
-    navigator.serviceWorker
-    .register('sw.js');
 
 }
 
