@@ -169,6 +169,14 @@ body{
 
     text-align:center;
 
+    transition:0.3s;
+
+}
+
+.upload-ui:hover{
+
+    transform:scale(1.01);
+
 }
 
 .upload-icon{
@@ -230,6 +238,14 @@ button{
     font-weight:bold;
 
     cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-1px);
 
 }
 
@@ -375,7 +391,7 @@ button{
 
     position:fixed;
 
-    top:20px;
+    top:22px;
 
     left:50%;
 
@@ -384,27 +400,68 @@ button{
     background:
     linear-gradient(
     135deg,
-    #dc2626,
-    #ef4444
+    #111827,
+    #1f2937
     );
 
     color:white;
 
-    padding:14px 18px;
+    padding:16px 22px;
 
-    border-radius:14px;
+    border-radius:18px;
 
     font-size:14px;
 
-    font-weight:bold;
+    font-weight:600;
 
     z-index:999999;
 
     display:none;
 
+    min-width:280px;
+
+    max-width:90%;
+
+    text-align:center;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.45);
+
+    border:
+    1px solid rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(14px);
+
+    animation:toastSlide 0.35s ease;
+
+}
+
+@keyframes toastSlide{
+
+    from{
+
+        opacity:0;
+
+        transform:
+        translateX(-50%)
+        translateY(-25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateX(-50%)
+        translateY(0);
+
+    }
+
 }
 
 </style>
+
 <link rel="manifest"
 href="manifest.json">
 
@@ -413,6 +470,7 @@ content="#2563eb">
 
 <link rel="apple-touch-icon"
 href="logo.png">
+
 </head>
 
 <body>
@@ -555,7 +613,7 @@ id="removedCount">
 <button class="download-btn"
 onclick="downloadRemovedPDF()">
 
-🟠 Download PDF
+⬇ Download PDF
 
 </button>
 
@@ -587,7 +645,7 @@ id="addedCount">
 <button class="download-btn"
 onclick="downloadAddedPDF()">
 
-🟠 Download PDF
+⬇ Download PDF
 
 </button>
 
@@ -625,20 +683,44 @@ let removedEmployees = [];
 let addedEmployees = [];
 let latestMonthName = "";
 
-function showToast(message){
+function showToast(message,type='info'){
 
     const toast =
     document.getElementById('toast');
 
     toast.innerHTML = message;
 
+    if(type === 'success'){
+
+        toast.style.background =
+        'linear-gradient(135deg,#059669,#10b981)';
+
+    }
+
+    else if(type === 'error'){
+
+        toast.style.background =
+        'linear-gradient(135deg,#dc2626,#ef4444)';
+
+    }
+
+    else{
+
+        toast.style.background =
+        'linear-gradient(135deg,#111827,#1f2937)';
+
+    }
+
     toast.style.display = 'block';
 
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer =
     setTimeout(()=>{
 
         toast.style.display = 'none';
 
-    },4000);
+    },3500);
 
 }
 
@@ -729,7 +811,8 @@ async function compareFiles(){
     if(!oldFile || !newFile){
 
         showToast(
-        "⚠️ Please upload both XLSX files"
+        "⚠️ Please upload both XLSX files",
+        'error'
         );
 
         return;
@@ -843,6 +926,11 @@ async function compareFiles(){
     'resultBox'
     ).style.display='grid';
 
+    showToast(
+    '✅ Files compared successfully',
+    'success'
+    );
+
 }
 
 async function createPDFBlob(
@@ -867,7 +955,7 @@ data
 
             doc.addImage(
                 logo,
-                'JPEG',
+                'PNG',
                 15,
                 12,
                 28,
@@ -1139,6 +1227,7 @@ async function shareAddedPDF(){
 }
 
 </script>
+
 <script>
 
 if('serviceWorker' in navigator){
@@ -1149,6 +1238,7 @@ if('serviceWorker' in navigator){
 }
 
 </script>
+
 </body>
 
 </html>
