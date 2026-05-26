@@ -12,10 +12,13 @@ content="width=device-width, initial-scale=1.0">
 Employees Union Member Checker
 </title>
 
+<!-- SheetJS -->
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 
+<!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+<!-- AutoTable -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
 <style>
@@ -72,8 +75,11 @@ body{
 }
 
 .logo-container{
+
     text-align:center;
+
     margin-bottom:10px;
+
 }
 
 .logo{
@@ -133,7 +139,9 @@ body{
 }
 
 .file-upload{
+
     margin-bottom:16px;
+
 }
 
 .upload-label{
@@ -149,12 +157,17 @@ body{
 }
 
 .custom-upload{
+
     display:block;
+
     cursor:pointer;
+
 }
 
 .custom-upload input{
+
     display:none;
+
 }
 
 .upload-ui{
@@ -180,8 +193,11 @@ body{
 }
 
 .upload-icon{
+
     font-size:32px;
+
     margin-bottom:6px;
+
 }
 
 .upload-text{
@@ -1001,6 +1017,378 @@ async function compareFiles(){
     '✅ Files compared successfully',
     'success'
     );
+
+}
+
+async function createPDFBlob(
+title,
+data
+){
+
+    const { jsPDF } =
+    window.jspdf;
+
+    const doc =
+    new jsPDF();
+
+    const logo =
+    new Image();
+
+    logo.src = "logo.png";
+
+    return new Promise(resolve=>{
+
+        logo.onload = function(){
+
+            doc.addImage(
+                logo,
+                'PNG',
+                15,
+                12,
+                28,
+                28
+            );
+
+            doc.setFont(
+            "helvetica",
+            "bold"
+            );
+
+            doc.setFontSize(28);
+
+            doc.setTextColor(
+            15,23,42
+            );
+
+            doc.text(
+                "Employees Union",
+                105,
+                22,
+                {align:'center'}
+            );
+
+            doc.setFontSize(20);
+
+            doc.setTextColor(
+            37,99,235
+            );
+
+            doc.text(
+                "N.F. Railway",
+                105,
+                33,
+                {align:'center'}
+            );
+
+            doc.setDrawColor(
+            37,99,235
+            );
+
+            doc.setLineWidth(1);
+
+            doc.line(
+                12,
+                45,
+                198,
+                45
+            );
+
+            doc.setFontSize(21);
+
+            doc.setTextColor(
+            37,99,235
+            );
+
+            doc.text(
+                title,
+                105,
+                58,
+                {align:'center'}
+            );
+
+            doc.setFontSize(14);
+
+            doc.setTextColor(
+            0,0,0
+            );
+
+            doc.text(
+                "Month: " +
+                latestMonthName,
+                105,
+                68,
+                {align:'center'}
+            );
+
+            doc.text(
+                "Total Members: "
+                + data.length,
+                105,
+                78,
+                {align:'center'}
+            );
+
+            const tableData =
+            data.map(emp=>[
+                emp.empName,
+                emp.empNo
+            ]);
+
+            doc.autoTable({
+
+                head:[[
+                    'Employee Name',
+                    'Employee Number'
+                ]],
+
+                body:tableData,
+
+                startY:90,
+
+                styles:{
+                    fontSize:10,
+                    cellPadding:4,
+                    halign:'left',
+                    valign:'middle'
+                },
+
+                headStyles:{
+                    fillColor:[37,99,235],
+                    halign:'left',
+                    valign:'middle',
+                    textColor:[255,255,255],
+                    fontStyle:'bold'
+                },
+
+                alternateRowStyles:{
+                    fillColor:[240,245,255]
+                }
+
+            });
+
+            doc.setFontSize(10);
+
+            doc.setTextColor(100);
+
+            doc.text(
+
+                "App Created By Gobind Sharma",
+
+                105,
+
+                doc.internal
+                .pageSize.height - 10,
+
+                {align:'center'}
+
+            );
+
+            const blob =
+            doc.output('blob');
+
+            resolve(blob);
+
+        };
+
+    });
+
+}
+
+async function downloadRemovedPDF(){
+
+    if(removedEmployees.length === 0){
+
+        showToast(
+        "No removed employees found",
+        "error"
+        );
+
+        return;
+
+    }
+
+    const blob =
+    await createPDFBlob(
+        "Removed Members List",
+        removedEmployees
+    );
+
+    const url =
+    URL.createObjectURL(blob);
+
+    const a =
+    document.createElement('a');
+
+    a.href = url;
+
+    a.download =
+    "Removed_Members_" +
+    latestMonthName +
+    ".pdf";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+}
+
+async function downloadAddedPDF(){
+
+    if(addedEmployees.length === 0){
+
+        showToast(
+        "No new employees found",
+        "error"
+        );
+
+        return;
+
+    }
+
+    const blob =
+    await createPDFBlob(
+        "Newly Added Members List",
+        addedEmployees
+    );
+
+    const url =
+    URL.createObjectURL(blob);
+
+    const a =
+    document.createElement('a');
+
+    a.href = url;
+
+    a.download =
+    "New_Members_" +
+    latestMonthName +
+    ".pdf";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+}
+
+async function shareRemovedPDF(){
+
+    if(removedEmployees.length === 0){
+
+        showToast(
+        "No removed employees found",
+        "error"
+        );
+
+        return;
+
+    }
+
+    const blob =
+    await createPDFBlob(
+        "Removed Members List",
+        removedEmployees
+    );
+
+    const file =
+    new File(
+        [blob],
+        "Removed_Members_" +
+        latestMonthName +
+        ".pdf",
+        {
+            type:'application/pdf'
+        }
+    );
+
+    if(
+    navigator.canShare &&
+    navigator.canShare({files:[file]})
+    ){
+
+        await navigator.share({
+
+            files:[file],
+
+            title:
+            "Removed Members List"
+
+        });
+
+    }
+
+    else{
+
+        showToast(
+        "Sharing not supported on this device",
+        "error"
+        );
+
+    }
+
+}
+
+async function shareAddedPDF(){
+
+    if(addedEmployees.length === 0){
+
+        showToast(
+        "No new employees found",
+        "error"
+        );
+
+        return;
+
+    }
+
+    const blob =
+    await createPDFBlob(
+        "Newly Added Members List",
+        addedEmployees
+    );
+
+    const file =
+    new File(
+        [blob],
+        "New_Members_" +
+        latestMonthName +
+        ".pdf",
+        {
+            type:'application/pdf'
+        }
+    );
+
+    if(
+    navigator.canShare &&
+    navigator.canShare({files:[file]})
+    ){
+
+        await navigator.share({
+
+            files:[file],
+
+            title:
+            "New Members List"
+
+        });
+
+    }
+
+    else{
+
+        showToast(
+        "Sharing not supported on this device",
+        "error"
+        );
+
+    }
 
 }
 
