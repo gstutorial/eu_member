@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Employees Union Member Checker
+</title>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial,sans-serif;
+
+    background:
+    linear-gradient(
+    135deg,
+    #020617,
+    #0f172a,
+    #1e293b
+    );
+
+    min-height:100vh;
+
+    padding:8px;
+
+    color:white;
+
+}
+
+.container{
+
+    width:100%;
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:26px;
+
+    padding:18px;
+
+    box-shadow:
+    0 15px 50px rgba(0,0,0,0.45);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+}
+
+.logo-container{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.logo{
+
+    width:88px;
+    height:88px;
+
+    object-fit:contain;
+
+    border-radius:50%;
+
+    background:white;
+
+    padding:6px;
+
+}
+
+.title{
+
+    text-align:center;
+
+    font-size:25px;
+
+    font-weight:bold;
+
+    margin-bottom:4px;
+
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:#cbd5e1;
+
+    margin-bottom:18px;
+
+    font-size:13px;
+
+}
+
+.upload-box{
+
+    background:
+    rgba(255,255,255,0.07);
+
+    padding:16px;
+
+    border-radius:20px;
+
+    margin-bottom:15px;
+
+}
+
+.file-upload{
+    margin-bottom:16px;
+}
+
+.upload-label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+    font-size:14px;
+
+}
+
+.custom-upload{
+    display:block;
+    cursor:pointer;
+}
+
+.custom-upload input{
+    display:none;
+}
+
+.upload-ui{
+
+    background:#f8fafc;
+
+    border:2px dashed #94a3b8;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    text-align:center;
+
+}
+
+.upload-icon{
+    font-size:32px;
+    margin-bottom:6px;
+}
+
+.upload-text{
+
+    color:#0f172a;
+
+    font-weight:bold;
+
+    font-size:14px;
+
+    margin-bottom:6px;
+
+}
+
+.file-name{
+
+    color:#475569;
+
+    font-size:12px;
+
+    word-break:break-word;
+
+}
+
+.file-success{
+
+    border-color:#16a34a !important;
+
+    background:#dcfce7 !important;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #06b6d4
+    );
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.result-box{
+
+    margin-top:18px;
+
+    display:none;
+
+    grid-template-columns:1fr;
+
+    gap:12px;
+
+}
+
+.card{
+
+    background:
+    linear-gradient(
+    135deg,
+    rgba(255,255,255,0.10),
+    rgba(255,255,255,0.05)
+    );
+
+    border-radius:18px;
+
+    padding:16px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    text-align:center;
+
+}
+
+.card h2{
+
+    margin-bottom:6px;
+
+    font-size:18px;
+
+}
+
+.count{
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    margin-top:6px;
+
+    margin-bottom:12px;
+
+    color:#38bdf8;
+
+}
+
+.button-row{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.download-btn{
+
+    flex:1;
+
+    background:
+    linear-gradient(
+    135deg,
+    #16a34a,
+    #22c55e
+    );
+
+}
+
+.share-btn{
+
+    width:60px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #f59e0b,
+    #f97316
+    );
+
+}
+
+.loading{
+
+    text-align:center;
+
+    margin-top:15px;
+
+    display:none;
+
+    font-size:16px;
+
+}
+
+.footer{
+
+    text-align:center;
+
+    margin-top:18px;
+
+    color:#cbd5e1;
+
+    font-size:12px;
+
+    line-height:1.6;
+
+}
+
+#toast{
+
+    position:fixed;
+
+    top:20px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    background:
+    linear-gradient(
+    135deg,
+    #dc2626,
+    #ef4444
+    );
+
+    color:white;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    z-index:999999;
+
+    display:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo-container">
+
+<img src="logo.jpg"
+class="logo">
+
+</div>
+
+<div class="title">
+
+Employees Union Member Checker
+
+</div>
+
+<div class="subtitle">
+
+Compare Monthly Union Member XLSX Files
+
+</div>
+
+<div class="upload-box">
+
+<div class="file-upload">
+
+<label class="upload-label">
+
+OLD Month XLSX File
+
+</label>
+
+<label class="custom-upload">
+
+<input type="file"
+id="oldFile"
+accept=".xlsx"
+onchange="showFileName(this,'oldFileName')">
+
+<div class="upload-ui">
+
+<div class="upload-icon">📁</div>
+
+<div class="upload-text">
+Tap to Upload Old File
+</div>
+
+<div class="file-name"
+id="oldFileName">
+No file selected
+</div>
+
+</div>
+
+</label>
+
+</div>
+
+<div class="file-upload">
+
+<label class="upload-label">
+
+NEW Month XLSX File
+
+</label>
+
+<label class="custom-upload">
+
+<input type="file"
+id="newFile"
+accept=".xlsx"
+onchange="showFileName(this,'newFileName')">
+
+<div class="upload-ui">
+
+<div class="upload-icon">📄</div>
+
+<div class="upload-text">
+Tap to Upload New File
+</div>
+
+<div class="file-name"
+id="newFileName">
+No file selected
+</div>
+
+</div>
+
+</label>
+
+</div>
+
+<button onclick="compareFiles()">
+
+Compare Files
+
+</button>
+
+</div>
+
+<div class="loading"
+id="loading">
+
+Processing Files...
+
+</div>
+
+<div class="result-box"
+id="resultBox">
+
+<div class="card">
+
+<h2>
+Current Total Members
+</h2>
+
+<div class="count"
+id="totalMembers">
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>
+Removed Employees
+</h2>
+
+<div class="count"
+id="removedCount">
+0
+</div>
+
+<div class="button-row">
+
+<button class="download-btn"
+onclick="downloadRemovedPDF()">
+
+Download PDF
+
+</button>
+
+<button class="share-btn"
+onclick="shareRemovedPDF()">
+
+📤
+
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>
+New Employees Added
+</h2>
+
+<div class="count"
+id="addedCount">
+0
+</div>
+
+<div class="button-row">
+
+<button class="download-btn"
+onclick="downloadAddedPDF()">
+
+Download PDF
+
+</button>
+
+<button class="share-btn"
+onclick="shareAddedPDF()">
+
+📤
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+NF Railway Employees Union
+
+<br>
+
+App Created By Gobind Sharma
+
+</div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+let removedEmployees = [];
+let addedEmployees = [];
+let latestMonthName = "";
+
+function showToast(message){
+
+    const toast =
+    document.getElementById('toast');
+
+    toast.innerHTML = message;
+
+    toast.style.display = 'block';
+
+    setTimeout(()=>{
+
+        toast.style.display = 'none';
+
+    },4000);
+
+}
+
+function showFileName(input,id){
+
+    const fileName =
+    document.getElementById(id);
+
+    if(input.files.length > 0){
+
+        fileName.innerHTML =
+        "✅ " + input.files[0].name;
+
+        input.parentElement
+        .querySelector('.upload-ui')
+        .classList.add('file-success');
+
+    }
+
+}
+
+function extractMonthYearFromFileName(fileName){
+
+    const regex =
+    /EU\s+([A-Za-z]+)\s+(\d{4})/i;
+
+    const match =
+    fileName.match(regex);
+
+    if(!match){
+        return null;
+    }
+
+    return {
+        monthName:match[1],
+        year:match[2]
+    };
+
+}
+
+async function readExcel(file){
+
+    return new Promise((resolve,reject)=>{
+
+        const reader =
+        new FileReader();
+
+        reader.onload = function(e){
+
+            const data =
+            new Uint8Array(e.target.result);
+
+            const workbook =
+            XLSX.read(data,{type:'array'});
+
+            const sheetName =
+            workbook.SheetNames[0];
+
+            const worksheet =
+            workbook.Sheets[sheetName];
+
+            const json =
+            XLSX.utils.sheet_to_json(
+                worksheet,
+                {header:1}
+            );
+
+            resolve(json);
+
+        };
+
+        reader.onerror = reject;
+
+        reader.readAsArrayBuffer(file);
+
+    });
+
+}
+
+async function compareFiles(){
+
+    const oldFile =
+    document.getElementById('oldFile').files[0];
+
+    const newFile =
+    document.getElementById('newFile').files[0];
+
+    if(!oldFile || !newFile){
+
+        showToast(
+        "⚠️ Please upload both XLSX files"
+        );
+
+        return;
+
+    }
+
+    const latestData =
+    extractMonthYearFromFileName(
+    newFile.name
+    );
+
+    if(latestData){
+
+        latestMonthName =
+        latestData.monthName +
+        " " +
+        latestData.year;
+
+    }
+
+    document.getElementById(
+    'loading'
+    ).style.display='block';
+
+    const oldData =
+    await readExcel(oldFile);
+
+    const newData =
+    await readExcel(newFile);
+
+    const oldMap = new Map();
+    const newMap = new Map();
+
+    oldData.forEach(row=>{
+
+        const empNo = row[5];
+        const empName = row[6];
+
+        if(empNo && empName){
+
+            oldMap.set(
+                String(empNo).trim(),
+                {
+                    empNo:String(empNo).trim(),
+                    empName:String(empName).trim()
+                }
+            );
+
+        }
+
+    });
+
+    newData.forEach(row=>{
+
+        const empNo = row[5];
+        const empName = row[6];
+
+        if(empNo && empName){
+
+            newMap.set(
+                String(empNo).trim(),
+                {
+                    empNo:String(empNo).trim(),
+                    empName:String(empName).trim()
+                }
+            );
+
+        }
+
+    });
+
+    removedEmployees = [];
+    addedEmployees = [];
+
+    oldMap.forEach((value,key)=>{
+
+        if(!newMap.has(key)){
+            removedEmployees.push(value);
+        }
+
+    });
+
+    newMap.forEach((value,key)=>{
+
+        if(!oldMap.has(key)){
+            addedEmployees.push(value);
+        }
+
+    });
+
+    document.getElementById(
+    'removedCount'
+    ).innerText =
+    removedEmployees.length;
+
+    document.getElementById(
+    'addedCount'
+    ).innerText =
+    addedEmployees.length;
+
+    document.getElementById(
+    'totalMembers'
+    ).innerText =
+    newMap.size;
+
+    document.getElementById(
+    'loading'
+    ).style.display='none';
+
+    document.getElementById(
+    'resultBox'
+    ).style.display='grid';
+
+}
+
+async function createPDFBlob(
+title,
+data
+){
+
+    const { jsPDF } =
+    window.jspdf;
+
+    const doc =
+    new jsPDF();
+
+    const logo =
+    new Image();
+
+    logo.src = "logo.jpg";
+
+    return new Promise(resolve=>{
+
+        logo.onload = function(){
+
+            doc.addImage(
+                logo,
+                'JPEG',
+                15,
+                12,
+                28,
+                28
+            );
+
+            doc.setFontSize(24);
+
+            doc.setFont(
+            "helvetica",
+            "bold"
+            );
+
+            doc.text(
+                "Employees Union",
+                105,
+                20,
+                {align:'center'}
+            );
+
+            doc.setFontSize(18);
+
+            doc.text(
+                "N.F. Railway",
+                105,
+                30,
+                {align:'center'}
+            );
+
+            doc.setDrawColor(
+            37,99,235
+            );
+
+            doc.setLineWidth(1);
+
+            doc.line(
+                12,
+                45,
+                198,
+                45
+            );
+
+            doc.setFontSize(18);
+
+            doc.setTextColor(
+            37,99,235
+            );
+
+            doc.text(
+                title,
+                105,
+                58,
+                {align:'center'}
+            );
+
+            doc.setFontSize(14);
+
+            doc.setTextColor(
+            0,0,0
+            );
+
+            doc.text(
+                "Month: " +
+                latestMonthName,
+                105,
+                68,
+                {align:'center'}
+            );
+
+            doc.text(
+                "Total Members: "
+                + data.length,
+                105,
+                78,
+                {align:'center'}
+            );
+
+            const tableData =
+            data.map(emp=>[
+                emp.empName,
+                emp.empNo
+            ]);
+
+            doc.autoTable({
+
+                head:[[
+                    'Employee Name',
+                    'Employee Number'
+                ]],
+
+                body:tableData,
+
+                startY:90,
+
+                styles:{
+                    fontSize:10,
+                    cellPadding:4
+                },
+
+                headStyles:{
+                    fillColor:[37,99,235],
+                    halign:'center'
+                },
+
+                alternateRowStyles:{
+                    fillColor:[240,245,255]
+                }
+
+            });
+
+            doc.setFontSize(10);
+
+            doc.setTextColor(100);
+
+            doc.text(
+
+                "App Created By Gobind Sharma",
+
+                105,
+
+                doc.internal
+                .pageSize.height - 10,
+
+                {align:'center'}
+
+            );
+
+            const blob =
+            doc.output('blob');
+
+            resolve(blob);
+
+        };
+
+    });
+
+}
+
+async function downloadRemovedPDF(){
+
+    const blob =
+    await createPDFBlob(
+        "Removed Members List",
+        removedEmployees
+    );
+
+    const link =
+    document.createElement('a');
+
+    link.href =
+    URL.createObjectURL(blob);
+
+    link.download =
+    "Removed_Members_" +
+    latestMonthName +
+    ".pdf";
+
+    link.click();
+
+}
+
+async function downloadAddedPDF(){
+
+    const blob =
+    await createPDFBlob(
+        "Newly Added Members List",
+        addedEmployees
+    );
+
+    const link =
+    document.createElement('a');
+
+    link.href =
+    URL.createObjectURL(blob);
+
+    link.download =
+    "New_Members_" +
+    latestMonthName +
+    ".pdf";
+
+    link.click();
+
+}
+
+async function shareRemovedPDF(){
+
+    const blob =
+    await createPDFBlob(
+        "Removed Members List",
+        removedEmployees
+    );
+
+    const file =
+    new File(
+        [blob],
+        "Removed_Members_" +
+        latestMonthName +
+        ".pdf",
+        {
+            type:'application/pdf'
+        }
+    );
+
+    if(navigator.share){
+
+        navigator.share({
+
+            files:[file],
+
+            title:
+            "Removed Members List"
+
+        });
+
+    }
+
+}
+
+async function shareAddedPDF(){
+
+    const blob =
+    await createPDFBlob(
+        "Newly Added Members List",
+        addedEmployees
+    );
+
+    const file =
+    new File(
+        [blob],
+        "New_Members_" +
+        latestMonthName +
+        ".pdf",
+        {
+            type:'application/pdf'
+        }
+    );
+
+    if(navigator.share){
+
+        navigator.share({
+
+            files:[file],
+
+            title:
+            "New Members List"
+
+        });
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
