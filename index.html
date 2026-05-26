@@ -95,9 +95,9 @@ body{
 
 .logo{
 
-    width:95px;
+    width:90px;
 
-    height:95px;
+    height:90px;
 
     object-fit:contain;
 
@@ -193,7 +193,7 @@ body{
 
     border-radius:24px;
 
-    padding:20px 12px;
+    padding:18px 12px;
 
     text-align:center;
 
@@ -209,7 +209,7 @@ body{
 
 .upload-icon{
 
-    font-size:40px;
+    font-size:34px;
 
     margin-bottom:8px;
 
@@ -219,7 +219,7 @@ body{
 
     color:#0f172a;
 
-    font-size:17px;
+    font-size:16px;
 
     font-weight:700;
 
@@ -301,9 +301,9 @@ body{
     rgba(255,255,255,0.05)
     );
 
-    border-radius:24px;
+    border-radius:22px;
 
-    padding:16px;
+    padding:14px;
 
     border:
     1px solid rgba(255,255,255,0.10);
@@ -319,17 +319,17 @@ body{
 
     align-items:center;
 
-    gap:12px;
+    gap:10px;
 
-    margin-bottom:6px;
+    margin-bottom:4px;
 
 }
 
 .card-icon{
 
-    width:54px;
+    width:46px;
 
-    height:54px;
+    height:46px;
 
     border-radius:50%;
 
@@ -339,7 +339,7 @@ body{
 
     justify-content:center;
 
-    font-size:24px;
+    font-size:20px;
 
     color:white;
 
@@ -376,7 +376,7 @@ body{
 
 .card-title{
 
-    font-size:16px;
+    font-size:15px;
 
     font-weight:700;
 
@@ -386,15 +386,15 @@ body{
 
 .count{
 
-    font-size:46px;
+    font-size:40px;
 
     font-weight:900;
 
     color:#38bdf8;
 
-    margin-left:66px;
+    margin-left:56px;
 
-    margin-bottom:12px;
+    margin-bottom:10px;
 
     line-height:1;
 
@@ -404,7 +404,7 @@ body{
 
     display:flex;
 
-    gap:10px;
+    gap:8px;
 
 }
 
@@ -414,9 +414,9 @@ body{
 
     border:none;
 
-    border-radius:16px;
+    border-radius:14px;
 
-    padding:13px;
+    padding:11px;
 
     background:
     linear-gradient(
@@ -427,7 +427,7 @@ body{
 
     color:white;
 
-    font-size:16px;
+    font-size:14px;
 
     font-weight:800;
 
@@ -437,7 +437,7 @@ body{
 
     justify-content:center;
 
-    gap:8px;
+    gap:6px;
 
     cursor:pointer;
 
@@ -448,11 +448,11 @@ body{
 
 .share-btn{
 
-    width:120px;
+    width:105px;
 
     border:none;
 
-    border-radius:16px;
+    border-radius:14px;
 
     background:
     linear-gradient(
@@ -463,7 +463,7 @@ body{
 
     color:white;
 
-    font-size:16px;
+    font-size:14px;
 
     font-weight:800;
 
@@ -473,7 +473,7 @@ body{
 
     justify-content:center;
 
-    gap:8px;
+    gap:6px;
 
     cursor:pointer;
 
@@ -545,160 +545,6 @@ body{
 
     box-shadow:
     0 10px 35px rgba(0,0,0,0.40);
-
-}
-
-@media(max-width:600px){
-
-    .container{
-
-        padding:14px;
-
-        border-radius:26px;
-
-    }
-
-    .logo{
-
-        width:88px;
-
-        height:88px;
-
-    }
-
-    .title{
-
-        font-size:22px;
-
-    }
-
-    .subtitle{
-
-        font-size:13px;
-
-        margin-bottom:14px;
-
-    }
-
-    .upload-box{
-
-        padding:14px;
-
-        border-radius:22px;
-
-    }
-
-    .upload-ui{
-
-        padding:18px 12px;
-
-        border-radius:22px;
-
-    }
-
-    .upload-icon{
-
-        font-size:34px;
-
-    }
-
-    .upload-text{
-
-        font-size:15px;
-
-    }
-
-    .file-name{
-
-        font-size:12px;
-
-    }
-
-    .compare-btn{
-
-        padding:14px;
-
-        font-size:17px;
-
-        border-radius:18px;
-
-    }
-
-    .result-box{
-
-        gap:10px;
-
-        margin-top:12px;
-
-    }
-
-    .card{
-
-        padding:14px;
-
-        border-radius:22px;
-
-    }
-
-    .card-header{
-
-        gap:10px;
-
-        margin-bottom:4px;
-
-    }
-
-    .card-icon{
-
-        width:46px;
-
-        height:46px;
-
-        font-size:20px;
-
-    }
-
-    .card-title{
-
-        font-size:15px;
-
-    }
-
-    .count{
-
-        font-size:40px;
-
-        margin-left:56px;
-
-        margin-bottom:10px;
-
-    }
-
-    .button-row{
-
-        gap:8px;
-
-    }
-
-    .download-btn{
-
-        padding:11px;
-
-        font-size:14px;
-
-        border-radius:14px;
-
-    }
-
-    .share-btn{
-
-        width:105px;
-
-        font-size:14px;
-
-        border-radius:14px;
-
-    }
 
 }
 
@@ -888,7 +734,6 @@ onclick="shareRemovedPDF()">
 
 <div class="card-icon green">
 ➕
-
 </div>
 
 <div class="card-title">
@@ -1261,6 +1106,404 @@ async function compareFiles(){
     '✅ Files compared successfully',
     'success'
     );
+
+}
+
+async function createPDFBlob(
+title,
+data
+){
+
+    const { jsPDF } =
+    window.jspdf;
+
+    const doc =
+    new jsPDF();
+
+    const logo =
+    new Image();
+
+    logo.src = "logo.png";
+
+    return new Promise(resolve=>{
+
+        logo.onload = function(){
+
+            doc.setFillColor(
+            37,99,235
+            );
+
+            doc.rect(
+            0,
+            0,
+            210,
+            42,
+            'F'
+            );
+
+            doc.addImage(
+                logo,
+                'PNG',
+                12,
+                7,
+                24,
+                24
+            );
+
+            doc.setTextColor(
+            255,255,255
+            );
+
+            doc.setFont(
+            "helvetica",
+            "bold"
+            );
+
+            doc.setFontSize(24);
+
+            doc.text(
+                "Employees Union",
+                44,
+                18
+            );
+
+            doc.setFontSize(16);
+
+            doc.text(
+                "N.F. Railway",
+                44,
+                29
+            );
+
+            doc.setFillColor(
+            248,250,252
+            );
+
+            doc.roundedRect(
+                14,
+                54,
+                182,
+                30,
+                5,
+                5,
+                'F'
+            );
+
+            doc.setDrawColor(
+            220,220,220
+            );
+
+            doc.roundedRect(
+                14,
+                54,
+                182,
+                30,
+                5,
+                5
+            );
+
+            doc.setTextColor(
+            37,99,235
+            );
+
+            doc.setFontSize(20);
+
+            doc.text(
+                title,
+                105,
+                66,
+                {align:'center'}
+            );
+
+            doc.setTextColor(
+            15,23,42
+            );
+
+            doc.setFontSize(13);
+
+            doc.text(
+                "Month: " +
+                latestMonthName,
+                22,
+                78
+            );
+
+            doc.text(
+                "Total Members: " +
+                data.length,
+                132,
+                78
+            );
+
+            const tableData =
+            data.map((emp,index)=>[
+                index + 1,
+                emp.empName,
+                emp.empNo
+            ]);
+
+            doc.autoTable({
+
+                head:[[
+                    'S.No.',
+                    'Employee Name',
+                    'Employee Number'
+                ]],
+
+                body:tableData,
+
+                startY:92,
+
+                styles:{
+                    fontSize:10,
+                    cellPadding:5,
+                    valign:'middle'
+                },
+
+                headStyles:{
+                    fillColor:[37,99,235],
+                    textColor:[255,255,255],
+                    fontStyle:'bold'
+                },
+
+                alternateRowStyles:{
+                    fillColor:[245,247,250]
+                }
+
+            });
+
+            doc.setFillColor(
+            37,99,235
+            );
+
+            doc.rect(
+            0,
+            285,
+            210,
+            12,
+            'F'
+            );
+
+            doc.setTextColor(
+            255,255,255
+            );
+
+            doc.setFontSize(10);
+
+            doc.text(
+                "NF Railway Employees Union",
+                12,
+                292
+            );
+
+            doc.text(
+                "App Created By Gobind Sharma",
+                132,
+                292
+            );
+
+            const blob =
+            doc.output('blob');
+
+            resolve(blob);
+
+        };
+
+    });
+
+}
+
+async function downloadRemovedPDF(){
+
+    if(removedEmployees.length === 0){
+
+        showToast(
+        "No removed employees found",
+        "error"
+        );
+
+        return;
+
+    }
+
+    const blob =
+    await createPDFBlob(
+        "Removed Members List",
+        removedEmployees
+    );
+
+    const url =
+    URL.createObjectURL(blob);
+
+    const a =
+    document.createElement('a');
+
+    a.href = url;
+
+    a.download =
+    "Removed_Members_" +
+    latestMonthName +
+    ".pdf";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+}
+
+async function downloadAddedPDF(){
+
+    if(addedEmployees.length === 0){
+
+        showToast(
+        "No new employees found",
+        "error"
+        );
+
+        return;
+
+    }
+
+    const blob =
+    await createPDFBlob(
+        "Newly Added Members List",
+        addedEmployees
+    );
+
+    const url =
+    URL.createObjectURL(blob);
+
+    const a =
+    document.createElement('a');
+
+    a.href = url;
+
+    a.download =
+    "New_Members_" +
+    latestMonthName +
+    ".pdf";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+}
+
+async function shareRemovedPDF(){
+
+    if(removedEmployees.length === 0){
+
+        showToast(
+        "No removed employees found",
+        "error"
+        );
+
+        return;
+
+    }
+
+    const blob =
+    await createPDFBlob(
+        "Removed Members List",
+        removedEmployees
+    );
+
+    const file =
+    new File(
+        [blob],
+        "Removed_Members_" +
+        latestMonthName +
+        ".pdf",
+        {
+            type:'application/pdf'
+        }
+    );
+
+    if(
+    navigator.canShare &&
+    navigator.canShare({files:[file]})
+    ){
+
+        await navigator.share({
+
+            files:[file],
+
+            title:
+            "Removed Members List"
+
+        });
+
+    }
+
+    else{
+
+        showToast(
+        "Sharing not supported",
+        "error"
+        );
+
+    }
+
+}
+
+async function shareAddedPDF(){
+
+    if(addedEmployees.length === 0){
+
+        showToast(
+        "No new employees found",
+        "error"
+        );
+
+        return;
+
+    }
+
+    const blob =
+    await createPDFBlob(
+        "Newly Added Members List",
+        addedEmployees
+    );
+
+    const file =
+    new File(
+        [blob],
+        "New_Members_" +
+        latestMonthName +
+        ".pdf",
+        {
+            type:'application/pdf'
+        }
+    );
+
+    if(
+    navigator.canShare &&
+    navigator.canShare({files:[file]})
+    ){
+
+        await navigator.share({
+
+            files:[file],
+
+            title:
+            "New Members List"
+
+        });
+
+    }
+
+    else{
+
+        showToast(
+        "Sharing not supported",
+        "error"
+        );
+
+    }
 
 }
 
