@@ -1,11 +1,11 @@
 {
   "name": "Employees Union Member Checker",
-  "short_name": "Membership Checker",
-  "start_url": "./",
+  "short_name": "Union Checker",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#2563eb",
-  "orientation": "portrait",
+  "description": "Compare Monthly Union Member XLSX Files",
   "icons": [
     {
       "src": "logo.png",
