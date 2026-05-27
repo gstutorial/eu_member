@@ -156,7 +156,7 @@ body{
 }
 
 /* =======================================
-   SEARCH UI STYLES (UPDATED FOR FULL NAME)
+   SEARCH UI STYLES
    ======================================= */
 .search-section {
     display: none; 
@@ -257,14 +257,8 @@ body{
     padding-right: 4px;
 }
 
-.search-results::-webkit-scrollbar {
-    width: 6px;
-}
-
-.search-results::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
-}
+.search-results::-webkit-scrollbar { width: 6px; }
+.search-results::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
 .search-card {
     background: rgba(255, 255, 255, 0.05);
@@ -272,7 +266,7 @@ body{
     border-radius: 16px;
     padding: 14px;
     display: flex;
-    flex-direction: column; /* Stack name and bottom row vertically */
+    flex-direction: column; 
     gap: 10px;
 }
 
@@ -280,8 +274,8 @@ body{
     font-weight: 700;
     font-size: 15px;
     color: white;
-    white-space: normal; /* Allow text to wrap naturally */
-    word-break: break-word; /* Ensure extremely long unbroken names don't overflow */
+    white-space: normal; 
+    word-break: break-word; 
     line-height: 1.4;
 }
 
@@ -305,20 +299,11 @@ body{
     white-space: nowrap;
 }
 
-.status-yes {
-    background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
-    border: 1px solid rgba(34, 197, 94, 0.3);
-}
-
-.status-no {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-}
+.status-yes { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+.status-no { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
 
 /* =======================================
-   REST OF THE STYLES
+   COLLAPSIBLE CARDS UI (NEW DESIGNS)
    ======================================= */
 .result-box{
     margin-top:14px;
@@ -335,11 +320,19 @@ body{
     box-shadow: 0 8px 25px rgba(0,0,0,0.20);
 }
 
-.card-header{
+.card-header-toggle{
     display:flex;
+    justify-content:space-between;
     align-items:center;
-    gap:10px;
-    margin-bottom:4px;
+    cursor:pointer;
+    user-select:none;
+    padding:4px 0;
+}
+
+.header-left, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .card-icon{
@@ -352,19 +345,12 @@ body{
     font-size:20px;
     color:white;
     font-weight:bold;
+    flex-shrink: 0;
 }
 
-.blue{
-    background: linear-gradient(135deg, #2563eb, #60a5fa);
-}
-
-.red{
-    background: linear-gradient(135deg, #dc2626, #ef4444);
-}
-
-.green{
-    background: linear-gradient(135deg, #16a34a, #4ade80);
-}
+.blue{ background: linear-gradient(135deg, #2563eb, #60a5fa); }
+.red{ background: linear-gradient(135deg, #dc2626, #ef4444); }
+.green{ background: linear-gradient(135deg, #16a34a, #4ade80); }
 
 .card-title{
     font-size:15px;
@@ -372,18 +358,59 @@ body{
     line-height:1.2;
 }
 
-.count{
-    font-size:40px;
+.count-small{
+    font-size:24px;
     font-weight:900;
     color:#38bdf8;
-    margin-left:56px;
-    margin-bottom:10px;
-    line-height:1;
 }
+
+.toggle-arrow{
+    color: #cbd5e1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform 0.3s ease;
+}
+
+.rotate-arrow{
+    transform: rotate(180deg);
+}
+
+.card-collapsible {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.list-container {
+    max-height: 250px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 4px;
+}
+
+.list-container::-webkit-scrollbar { width: 6px; }
+.list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+.list-item {
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-item-name { font-size: 14px; font-weight: 700; color: white; word-break: break-word; flex:1; padding-right:10px; }
+.list-item-no { font-size: 12px; color: #cbd5e1; font-weight:bold; }
 
 .button-row{
     display:flex;
     gap:8px;
+    margin-top:14px;
 }
 
 .download-btn{
@@ -557,19 +584,39 @@ Processing Files...
 <div class="result-box" id="resultBox">
 
     <div class="card">
-        <div class="card-header">
-            <div class="card-icon blue">👥</div>
-            <div class="card-title">Current Total Members</div>
+        <div class="card-header-toggle" onclick="toggleList('total-members-list', 'total-arrow')">
+            <div class="header-left">
+                <div class="card-icon blue">👥</div>
+                <div class="card-title">Current Total Members</div>
+            </div>
+            <div class="header-right">
+                <div class="count-small" id="totalMembers">0</div>
+                <div class="toggle-arrow" id="total-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
         </div>
-        <div class="count" id="totalMembers">0</div>
+        <div class="card-collapsible" id="total-members-list">
+            <div class="list-container" id="list-total"></div>
+        </div>
     </div>
 
     <div class="card">
-        <div class="card-header">
-            <div class="card-icon red">➖</div>
-            <div class="card-title">Removed Employees</div>
+        <div class="card-header-toggle" onclick="toggleList('removed-members-list', 'removed-arrow')">
+            <div class="header-left">
+                <div class="card-icon red">➖</div>
+                <div class="card-title">Removed Employees</div>
+            </div>
+            <div class="header-right">
+                <div class="count-small" id="removedCount">0</div>
+                <div class="toggle-arrow" id="removed-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
         </div>
-        <div class="count" id="removedCount">0</div>
+        <div class="card-collapsible" id="removed-members-list">
+            <div class="list-container" id="list-removed"></div>
+        </div>
         <div class="button-row">
             <button class="download-btn" onclick="downloadRemovedPDF()">⬇ Download</button>
             <button class="share-btn" onclick="shareRemovedPDF()">🔗 Share</button>
@@ -577,11 +624,21 @@ Processing Files...
     </div>
 
     <div class="card">
-        <div class="card-header">
-            <div class="card-icon green">➕</div>
-            <div class="card-title">New Employees Added</div>
+        <div class="card-header-toggle" onclick="toggleList('added-members-list', 'added-arrow')">
+            <div class="header-left">
+                <div class="card-icon green">➕</div>
+                <div class="card-title">New Employees Added</div>
+            </div>
+            <div class="header-right">
+                <div class="count-small" id="addedCount">0</div>
+                <div class="toggle-arrow" id="added-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
         </div>
-        <div class="count" id="addedCount">0</div>
+        <div class="card-collapsible" id="added-members-list">
+            <div class="list-container" id="list-added"></div>
+        </div>
         <div class="button-row">
             <button class="download-btn" onclick="downloadAddedPDF()">⬇ Download</button>
             <button class="share-btn" onclick="shareAddedPDF()">🔗 Share</button>
@@ -673,6 +730,16 @@ async function readExcel(file){
     });
 }
 
+function generateListHTML(dataArray) {
+    if(dataArray.length === 0) return '<div style="text-align:center; color:#94a3b8; padding:10px 0;">No records found</div>';
+    return dataArray.map(emp => `
+        <div class="list-item">
+            <div class="list-item-name">${emp.empName}</div>
+            <div class="list-item-no">${emp.empNo}</div>
+        </div>
+    `).join('');
+}
+
 async function compareFiles(){
     const oldFile = document.getElementById('oldFile').files[0];
     const newFile = document.getElementById('newFile').files[0];
@@ -731,6 +798,7 @@ async function compareFiles(){
 
     removedEmployees = [];
     addedEmployees = [];
+    const totalMembersArray = Array.from(globalNewMap.values());
 
     globalOldMap.forEach((value,key)=>{
         if(!globalNewMap.has(key)){
@@ -744,14 +812,37 @@ async function compareFiles(){
         }
     });
 
+    // Update Counts
     document.getElementById('removedCount').innerText = removedEmployees.length;
     document.getElementById('addedCount').innerText = addedEmployees.length;
     document.getElementById('totalMembers').innerText = globalNewMap.size;
+    
+    // Populate internal lists
+    document.getElementById('list-total').innerHTML = generateListHTML(totalMembersArray);
+    document.getElementById('list-removed').innerHTML = generateListHTML(removedEmployees);
+    document.getElementById('list-added').innerHTML = generateListHTML(addedEmployees);
+
     document.getElementById('loading').style.display='none';
     document.getElementById('resultBox').style.display='flex';
     document.getElementById('searchSection').style.display='block';
 
     showToast('✅ Files compared successfully', 'success');
+}
+
+// ==========================================
+// CARD TOGGLE FUNCTIONALITY
+// ==========================================
+function toggleList(listId, arrowId) {
+    const list = document.getElementById(listId);
+    const arrow = document.getElementById(arrowId);
+    
+    if (list.style.display === 'none' || list.style.display === '') {
+        list.style.display = 'block';
+        arrow.classList.add('rotate-arrow');
+    } else {
+        list.style.display = 'none';
+        arrow.classList.remove('rotate-arrow');
+    }
 }
 
 // ==========================================
@@ -796,7 +887,6 @@ function searchEmployee() {
         const statusClass = data.isMember ? 'status-yes' : 'status-no';
         const statusText = data.isMember ? 'Membership: YES' : 'Membership: NO';
 
-        // UPDATED: Now placed full name on top row, Emp No & Badge on bottom row
         card.innerHTML = `
             <div class="emp-name">${data.empName}</div>
             <div class="card-bottom">
@@ -825,8 +915,22 @@ document.getElementById("searchInput").addEventListener("keypress", function(eve
 
 
 // ==========================================
-// PDF GENERATION
+// PDF GENERATION WITH CUSTOM GRADIENTS
 // ==========================================
+
+// Helper function to draw a linear gradient manually for jsPDF
+function addGradientToRect(doc, x, y, w, h, c1, c2) {
+    const step = 1; // 1px step for perfect smooth gradient
+    for (let i = 0; i <= w; i += step) {
+        let ratio = i / w;
+        let r = Math.round(c1[0] + (c2[0] - c1[0]) * ratio);
+        let g = Math.round(c1[1] + (c2[1] - c1[1]) * ratio);
+        let b = Math.round(c1[2] + (c2[2] - c1[2]) * ratio);
+        doc.setFillColor(r, g, b);
+        doc.rect(x + i, y, step + 0.5, h, 'F');
+    }
+}
+
 async function createPDFBlob(title, data){
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -847,8 +951,8 @@ async function createPDFBlob(title, data){
 }
 
 function renderPDF(doc, logo, title, data) {
-    doc.setFillColor(37,99,235);
-    doc.rect(0, 0, 210, 42, 'F');
+    // 1. TOP HEADER GRADIENT (From #2563eb to #06b6d4)
+    addGradientToRect(doc, 0, 0, 210, 42, [37, 99, 235], [6, 182, 212]);
 
     if (logo) {
         doc.addImage(logo, 'PNG', 12, 7, 24, 24);
@@ -886,12 +990,35 @@ function renderPDF(doc, logo, title, data) {
         body:tableData,
         startY:92,
         styles:{ fontSize:10, cellPadding:5, valign:'middle' },
-        headStyles:{ fillColor:[37,99,235], textColor:[255,255,255], fontStyle:'bold' },
-        alternateRowStyles:{ fillColor:[245,247,250] }
+        // Set fillColor to null so default doesn't overwrite our gradient below
+        headStyles:{ fillColor: null, textColor:[255,255,255], fontStyle:'bold' },
+        alternateRowStyles:{ fillColor:[245,247,250] },
+        
+        // 2. TABLE HEADER GRADIENT HOOK
+        willDrawCell: function(data) {
+            if (data.section === 'head') {
+                // Table width is roughly 210 - (14 * 2 margins) = 182
+                let tableW = 182; 
+                let relativeX = data.cell.x - 14; 
+                
+                // Draw gradient pixel block behind the text for just this cell's slice
+                for (let i = 0; i <= data.cell.width; i += 1) {
+                    let ratio = (relativeX + i) / tableW;
+                    // Clamp ratio between 0 and 1
+                    ratio = Math.max(0, Math.min(1, ratio));
+                    let r = Math.round(37 + (6 - 37) * ratio);
+                    let g = Math.round(99 + (182 - 99) * ratio);
+                    let b = Math.round(235 + (212 - 235) * ratio);
+                    
+                    data.doc.setFillColor(r, g, b);
+                    data.doc.rect(data.cell.x + i, data.cell.y, 1.5, data.cell.height, 'F');
+                }
+            }
+        }
     });
 
-    doc.setFillColor(37,99,235);
-    doc.rect(0, 285, 210, 12, 'F');
+    // 3. BOTTOM FOOTER GRADIENT
+    addGradientToRect(doc, 0, 285, 210, 12, [37, 99, 235], [6, 182, 212]);
     doc.setTextColor(255,255,255);
     doc.setFontSize(10);
     doc.text("NF Railway Employees Union", 12, 292);
