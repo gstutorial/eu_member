@@ -84,6 +84,7 @@ body{
     background: rgba(255,255,255,0.06);
     border-radius:24px;
     padding:16px;
+    animation: fadeIn 0.4s ease-in-out;
 }
 
 .file-upload{
@@ -312,6 +313,7 @@ body{
     display:none;
     flex-direction:column;
     gap:12px;
+    animation: fadeIn 0.4s ease-in-out;
 }
 
 .card{
@@ -457,6 +459,29 @@ body{
     box-shadow: 0 8px 20px rgba(59,130,246,0.35);
 }
 
+.back-btn {
+    width: 100%;
+    border: none;
+    border-radius: 18px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
 .loading{
     display:none;
     text-align:center;
@@ -550,7 +575,7 @@ Employees Union Member Checker
 Compare Monthly Union Member XLSX Files
 </div>
 
-<div class="upload-box">
+<div class="upload-box" id="uploadBox">
     <div class="file-upload">
         <label class="upload-label">OLD Month XLSX File</label>
         <label class="custom-upload">
@@ -691,6 +716,14 @@ Processing Files...
         </div>
     </div>
 
+    <button class="back-btn" onclick="goBackToUpload()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Uploads
+    </button>
+
 </div>
 
 <div class="footer">
@@ -811,6 +844,8 @@ async function compareFiles(){
         latestMonthName = latestData.monthName + " " + latestData.year;
     }
 
+    // Hide upload box, show loading
+    document.getElementById('uploadBox').style.display = 'none';
     document.getElementById('loading').style.display='block';
     
     document.getElementById('searchSection').style.display = 'none';
@@ -883,11 +918,26 @@ async function compareFiles(){
     document.getElementById('list-removed').innerHTML = generateListHTML(removedEmployees);
     document.getElementById('list-added').innerHTML = generateListHTML(addedEmployees);
 
+    // Hide loading, show results
     document.getElementById('loading').style.display='none';
     document.getElementById('resultBox').style.display='flex';
     document.getElementById('searchSection').style.display='block';
 
     showToast('✅ Files compared successfully', 'success');
+}
+
+// Function to handle Back Button click
+function goBackToUpload() {
+    // Hide results and search
+    document.getElementById('resultBox').style.display = 'none';
+    document.getElementById('searchSection').style.display = 'none';
+    
+    // Show upload box again
+    document.getElementById('uploadBox').style.display = 'block';
+    
+    // Optional: clear search field to keep things tidy
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').innerHTML = '';
 }
 
 // ==========================================
