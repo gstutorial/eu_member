@@ -156,7 +156,7 @@ body{
 }
 
 /* =======================================
-   SEARCH UI STYLES (MOBILE FIXED)
+   SEARCH UI STYLES (UPDATED FOR FULL NAME)
    ======================================= */
 .search-section {
     display: none; 
@@ -165,7 +165,7 @@ body{
     border-radius: 24px;
     padding: 16px;
     animation: fadeIn 0.4s ease-in-out;
-    width: 100%; /* Ensure section doesn't overflow */
+    width: 100%;
 }
 
 @keyframes fadeIn {
@@ -176,9 +176,9 @@ body{
 .search-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px; /* Reduced gap slightly */
+    gap: 10px;
     margin-bottom: 10px;
-    width: 100%; /* Ensure wrapper respects container width */
+    width: 100%;
 }
 
 .search-input-group {
@@ -187,9 +187,9 @@ body{
     align-items: center;
     background: #ffffff;
     border-radius: 50px;
-    padding: 5px 5px 5px 16px; /* Tweaked padding for mobile */
+    padding: 5px 5px 5px 16px; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    min-width: 0; /* CRITICAL FIX: Allows flex item to shrink below input default size */
+    min-width: 0; 
 }
 
 .search-input {
@@ -202,7 +202,7 @@ body{
     padding: 0;
     margin-right: 8px;
     font-family: inherit;
-    min-width: 0; /* CRITICAL FIX: Allows input to shrink */
+    min-width: 0; 
     width: 100%;
 }
 
@@ -215,13 +215,13 @@ body{
     background: #6d28d9;
     border: none;
     border-radius: 50px;
-    width: 40px; /* Slightly scaled down for mobile */
+    width: 40px; 
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    flex-shrink: 0; /* CRITICAL FIX: Prevents button from shrinking */
+    flex-shrink: 0; 
     transition: transform 0.2s;
 }
 
@@ -239,7 +239,7 @@ body{
     padding: 4px;
     transition: 0.2s;
     opacity: 0.8;
-    flex-shrink: 0; /* Prevents clear button from shrinking */
+    flex-shrink: 0; 
 }
 
 .clear-search-btn:hover {
@@ -272,24 +272,24 @@ body{
     border-radius: 16px;
     padding: 14px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.emp-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 0; /* Allow text truncation if needed */
+    flex-direction: column; /* Stack name and bottom row vertically */
+    gap: 10px;
 }
 
 .emp-name {
     font-weight: 700;
     font-size: 15px;
     color: white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal; /* Allow text to wrap naturally */
+    word-break: break-word; /* Ensure extremely long unbroken names don't overflow */
+    line-height: 1.4;
+}
+
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .emp-no {
@@ -303,7 +303,6 @@ body{
     font-size: 12px;
     font-weight: 800;
     white-space: nowrap;
-    flex-shrink: 0;
 }
 
 .status-yes {
@@ -797,13 +796,14 @@ function searchEmployee() {
         const statusClass = data.isMember ? 'status-yes' : 'status-no';
         const statusText = data.isMember ? 'Membership: YES' : 'Membership: NO';
 
+        // UPDATED: Now placed full name on top row, Emp No & Badge on bottom row
         card.innerHTML = `
-            <div class="emp-info">
-                <div class="emp-name" title="${data.empName}">${data.empName}</div>
+            <div class="emp-name">${data.empName}</div>
+            <div class="card-bottom">
                 <div class="emp-no">Emp No: ${data.empNo}</div>
-            </div>
-            <div class="status-badge ${statusClass}">
-                ${statusText}
+                <div class="status-badge ${statusClass}">
+                    ${statusText}
+                </div>
             </div>
         `;
         resultsContainer.appendChild(card);
