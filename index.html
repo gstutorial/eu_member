@@ -786,24 +786,36 @@ async function compareFiles(){
     globalOldMap.clear();
     globalNewMap.clear();
 
-    oldData.forEach(row=>{
+    oldData.forEach((row, index) => {
+        if (index === 0) return; // Skip header row
         const empNo = row[5];
         const empName = row[6];
-        if(empNo && empName){
+        if (empNo && empName) {
+            const cleanEmpNo = String(empNo).trim();
+            const cleanEmpName = String(empName).trim();
+            // Prevent actual header text from being saved as data
+            if (cleanEmpNo.toLowerCase() === 'emp no' || cleanEmpNo.toLowerCase() === 'emp no.') return;
+            
             globalOldMap.set(
-                String(empNo).trim(),
-                { empNo:String(empNo).trim(), empName:String(empName).trim() }
+                cleanEmpNo,
+                { empNo: cleanEmpNo, empName: cleanEmpName }
             );
         }
     });
 
-    newData.forEach(row=>{
+    newData.forEach((row, index) => {
+        if (index === 0) return; // Skip header row
         const empNo = row[5];
         const empName = row[6];
-        if(empNo && empName){
+        if (empNo && empName) {
+            const cleanEmpNo = String(empNo).trim();
+            const cleanEmpName = String(empName).trim();
+            // Prevent actual header text from being saved as data
+            if (cleanEmpNo.toLowerCase() === 'emp no' || cleanEmpNo.toLowerCase() === 'emp no.') return;
+
             globalNewMap.set(
-                String(empNo).trim(),
-                { empNo:String(empNo).trim(), empName:String(empName).trim() }
+                cleanEmpNo,
+                { empNo: cleanEmpNo, empName: cleanEmpName }
             );
         }
     });
@@ -848,12 +860,24 @@ function toggleList(listId, arrowId) {
     const list = document.getElementById(listId);
     const arrow = document.getElementById(arrowId);
     
-    if (list.style.display === 'none' || list.style.display === '') {
+    // Check if the clicked list is currently closed
+    const isCurrentlyClosed = (list.style.display === 'none' || list.style.display === '');
+
+    // Close all lists and reset arrows first
+    const allLists = ['total-members-list', 'removed-members-list', 'added-members-list'];
+    const allArrows = ['total-arrow', 'removed-arrow', 'added-arrow'];
+    
+    allLists.forEach((id, index) => {
+        const el = document.getElementById(id);
+        const arr = document.getElementById(allArrows[index]);
+        if (el) el.style.display = 'none';
+        if (arr) arr.classList.remove('rotate-arrow');
+    });
+    
+    // If it was closed before clicking, open it now
+    if (isCurrentlyClosed) {
         list.style.display = 'block';
         arrow.classList.add('rotate-arrow');
-    } else {
-        list.style.display = 'none';
-        arrow.classList.remove('rotate-arrow');
     }
 }
 
