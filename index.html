@@ -4,13 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 
-<title>
-Employees Union Member Checker
-</title>
+<title>Employees Union Member Checker</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -32,255 +32,134 @@ Employees Union Member Checker
 }
 
 body{
-
-    font-family:
-    Arial,sans-serif;
-
-    background:
-    radial-gradient(
-    circle at top,
-    #1e3a8a 0%,
-    #0f172a 40%,
-    #020617 100%
-    );
-
+    font-family: Arial,sans-serif;
+    background: radial-gradient(circle at top, #1e3a8a 0%, #0f172a 40%, #020617 100%);
     min-height:100vh;
-
     padding:8px;
-
     color:white;
-
 }
 
 .container{
-
     width:100%;
-
     max-width:650px;
-
     margin:auto;
-
-    background:
-    linear-gradient(
-    135deg,
-    rgba(255,255,255,0.10),
-    rgba(255,255,255,0.04)
-    );
-
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
     border-radius:30px;
-
     padding:18px;
-
-    border:
-    1px solid rgba(255,255,255,0.10);
-
+    border: 1px solid rgba(255,255,255,0.10);
     backdrop-filter:blur(20px);
-
-    box-shadow:
-    0 15px 50px rgba(0,0,0,0.45);
-
+    box-shadow: 0 15px 50px rgba(0,0,0,0.45);
 }
 
 .logo-container{
-
     text-align:center;
-
     margin-bottom:8px;
-
 }
 
 .logo{
-
     width:90px;
-
     height:90px;
-
     object-fit:contain;
-
     border-radius:50%;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,0.40);
-
+    box-shadow: 0 10px 30px rgba(0,0,0,0.40);
 }
 
 .title{
-
     text-align:center;
-
     font-size:28px;
-
     font-weight:800;
-
     line-height:1.15;
-
     margin-top:8px;
-
 }
 
 .subtitle{
-
     text-align:center;
-
     color:#cbd5e1;
-
     font-size:14px;
-
     margin-top:8px;
-
     margin-bottom:18px;
-
 }
 
 .upload-box{
-
-    background:
-    rgba(255,255,255,0.06);
-
+    background: rgba(255,255,255,0.06);
     border-radius:24px;
-
     padding:16px;
-
 }
 
 .file-upload{
-
     margin-bottom:14px;
-
 }
 
 .upload-label{
-
     font-size:14px;
-
     font-weight:bold;
-
     margin-bottom:8px;
-
     display:block;
-
 }
 
 .custom-upload{
-
     display:block;
-
     cursor:pointer;
-
 }
 
 .custom-upload input{
-
     display:none;
-
 }
 
 .upload-ui{
-
-    background:
-    linear-gradient(
-    135deg,
-    #ecfdf5,
-    #d1fae5
-    );
-
-    border:
-    3px dashed #22c55e;
-
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 3px dashed #22c55e;
     border-radius:24px;
-
     padding:18px 12px;
-
     text-align:center;
-
     transition:0.3s;
-
 }
 
 .upload-ui:hover{
-
     transform:scale(1.01);
-
 }
 
 .upload-icon{
-
     font-size:34px;
-
     margin-bottom:8px;
-
 }
 
 .upload-text{
-
     color:#0f172a;
-
     font-size:16px;
-
     font-weight:700;
-
     margin-bottom:8px;
-
 }
 
 .file-name{
-
     color:#475569;
-
     font-size:13px;
-
     font-weight:600;
-
 }
 
 .file-success{
-
     border-color:#16a34a !important;
-
-    background:
-    linear-gradient(
-    135deg,
-    #dcfce7,
-    #bbf7d0
-    ) !important;
-
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0) !important;
 }
 
 .compare-btn{
-
     width:100%;
-
     border:none;
-
     border-radius:18px;
-
     padding:15px;
-
-    background:
-    linear-gradient(
-    135deg,
-    #2563eb,
-    #06b6d4
-    );
-
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
     color:white;
-
     font-size:18px;
-
     font-weight:800;
-
     cursor:pointer;
-
-    box-shadow:
-    0 10px 25px rgba(37,99,235,0.35);
-
+    box-shadow: 0 10px 25px rgba(37,99,235,0.35);
 }
 
 /* =======================================
-   NEW SEARCH UI STYLES
+   NEW SEARCH UI STYLES (PILL DESIGN)
    ======================================= */
 .search-section {
-    display: none; /* Hidden until compare is clicked */
+    display: none; 
     margin-top: 14px;
     background: rgba(255, 255, 255, 0.06);
     border-radius: 24px;
@@ -293,40 +172,73 @@ body{
     to { opacity: 1; transform: translateY(0); }
 }
 
-.search-input-group {
+.search-wrapper {
     display: flex;
-    gap: 8px;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.search-input-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 50px;
+    padding: 6px 6px 6px 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 .search-input {
     flex: 1;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-    padding: 12px 16px;
-    color: white;
-    font-size: 15px;
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 16px;
     outline: none;
-    transition: border 0.3s;
-}
-
-.search-input:focus {
-    border-color: #38bdf8;
+    padding: 0;
+    margin-right: 10px;
+    font-family: inherit;
 }
 
 .search-input::placeholder {
-    color: #94a3b8;
+    color: #a0aec0;
+    font-weight: 500;
 }
 
 .search-btn {
-    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-    color: white;
+    background: #6d28d9; /* Matching Image Purple */
     border: none;
-    border-radius: 16px;
-    padding: 0 20px;
-    font-weight: bold;
+    border-radius: 50px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.search-btn:active {
+    transform: scale(0.92);
+}
+
+.clear-search-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    transition: 0.2s;
+    opacity: 0.8;
+}
+
+.clear-search-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 .search-results {
@@ -335,7 +247,7 @@ body{
     gap: 10px;
     max-height: 260px;
     overflow-y: auto;
-    margin-top: 12px;
+    margin-top: 16px;
     padding-right: 4px;
 }
 
@@ -395,6 +307,9 @@ body{
     border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+/* =======================================
+   REST OF THE STYLES
+   ======================================= */
 .result-box{
     margin-top:14px;
     display:none;
@@ -403,18 +318,11 @@ body{
 }
 
 .card{
-    background:
-    linear-gradient(
-    135deg,
-    rgba(255,255,255,0.10),
-    rgba(255,255,255,0.05)
-    );
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
     border-radius:22px;
     padding:14px;
-    border:
-    1px solid rgba(255,255,255,0.10);
-    box-shadow:
-    0 8px 25px rgba(0,0,0,0.20);
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.20);
 }
 
 .card-header{
@@ -568,235 +476,113 @@ body{
 <div class="container">
 
 <div class="logo-container">
-
-<img src="logo.png"
-class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCI+PGNpcmNsZSBjeD0iNDUiIGN5PSI0NSIgcj0iNDUiIGZpbGw9IiM0NzU1NjkiLz48L3N2Zz4='">
-
+<img src="logo.png" class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCI+PGNpcmNsZSBjeD0iNDUiIGN5PSI0NSIgcj0iNDUiIGZpbGw9IiM0NzU1NjkiLz48L3N2Zz4='">
 </div>
 
 <div class="title">
-
 Employees Union Member Checker
-
 </div>
 
 <div class="subtitle">
-
 Compare Monthly Union Member XLSX Files
-
 </div>
 
 <div class="upload-box">
+    <div class="file-upload">
+        <label class="upload-label">OLD Month XLSX File</label>
+        <label class="custom-upload">
+            <input type="file" id="oldFile" accept=".xlsx" onchange="showFileName(this,'oldFileName')">
+            <div class="upload-ui">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Tap to Upload Old File</div>
+                <div class="file-name" id="oldFileName">No file selected</div>
+            </div>
+        </label>
+    </div>
 
-<div class="file-upload">
+    <div class="file-upload">
+        <label class="upload-label">NEW Month XLSX File</label>
+        <label class="custom-upload">
+            <input type="file" id="newFile" accept=".xlsx" onchange="showFileName(this,'newFileName')">
+            <div class="upload-ui">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">Tap to Upload New File</div>
+                <div class="file-name" id="newFileName">No file selected</div>
+            </div>
+        </label>
+    </div>
 
-<label class="upload-label">
-
-OLD Month XLSX File
-
-</label>
-
-<label class="custom-upload">
-
-<input type="file"
-id="oldFile"
-accept=".xlsx"
-onchange="showFileName(this,'oldFileName')">
-
-<div class="upload-ui">
-
-<div class="upload-icon">
-📁
-</div>
-
-<div class="upload-text">
-Tap to Upload Old File
-</div>
-
-<div class="file-name"
-id="oldFileName">
-No file selected
-</div>
-
-</div>
-
-</label>
-
-</div>
-
-<div class="file-upload">
-
-<label class="upload-label">
-
-NEW Month XLSX File
-
-</label>
-
-<label class="custom-upload">
-
-<input type="file"
-id="newFile"
-accept=".xlsx"
-onchange="showFileName(this,'newFileName')">
-
-<div class="upload-ui">
-
-<div class="upload-icon">
-📄
-</div>
-
-<div class="upload-text">
-Tap to Upload New File
-</div>
-
-<div class="file-name"
-id="newFileName">
-No file selected
-</div>
-
-</div>
-
-</label>
-
-</div>
-
-<button class="compare-btn"
-onclick="compareFiles()">
-
-📑 Compare Files
-
-</button>
-
+    <button class="compare-btn" onclick="compareFiles()">
+        📑 Compare Files
+    </button>
 </div>
 
 <div class="search-section" id="searchSection">
-    <div class="search-input-group">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search by Name or Emp No...">
-        <button class="search-btn" onclick="searchEmployee()">🔍 Search</button>
+    <div class="search-wrapper">
+        <div class="search-input-group">
+            <input type="text" id="searchInput" class="search-input" placeholder="Type to search..">
+            <button class="search-btn" onclick="searchEmployee()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+        </div>
+        <button class="clear-search-btn" onclick="clearSearchUI()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
     </div>
+    
     <div class="search-results" id="searchResults">
         </div>
 </div>
 
-<div class="loading"
-id="loading">
-
+<div class="loading" id="loading">
 Processing Files...
-
 </div>
 
-<div class="result-box"
-id="resultBox">
+<div class="result-box" id="resultBox">
 
-<div class="card">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon blue">👥</div>
+            <div class="card-title">Current Total Members</div>
+        </div>
+        <div class="count" id="totalMembers">0</div>
+    </div>
 
-<div class="card-header">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon red">➖</div>
+            <div class="card-title">Removed Employees</div>
+        </div>
+        <div class="count" id="removedCount">0</div>
+        <div class="button-row">
+            <button class="download-btn" onclick="downloadRemovedPDF()">⬇ Download</button>
+            <button class="share-btn" onclick="shareRemovedPDF()">🔗 Share</button>
+        </div>
+    </div>
 
-<div class="card-icon blue">
-👥
-</div>
-
-<div class="card-title">
-Current Total Members
-</div>
-
-</div>
-
-<div class="count"
-id="totalMembers">
-0
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="card-header">
-
-<div class="card-icon red">
-➖
-</div>
-
-<div class="card-title">
-Removed Employees
-</div>
-
-</div>
-
-<div class="count"
-id="removedCount">
-0
-</div>
-
-<div class="button-row">
-
-<button class="download-btn"
-onclick="downloadRemovedPDF()">
-
-⬇ Download
-
-</button>
-
-<button class="share-btn"
-onclick="shareRemovedPDF()">
-
-🔗 Share
-
-</button>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="card-header">
-
-<div class="card-icon green">
-➕
-</div>
-
-<div class="card-title">
-New Employees Added
-</div>
-
-</div>
-
-<div class="count"
-id="addedCount">
-0
-</div>
-
-<div class="button-row">
-
-<button class="download-btn"
-onclick="downloadAddedPDF()">
-
-⬇ Download
-
-</button>
-
-<button class="share-btn"
-onclick="shareAddedPDF()">
-
-🔗 Share
-
-</button>
-
-</div>
-
-</div>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon green">➕</div>
+            <div class="card-title">New Employees Added</div>
+        </div>
+        <div class="count" id="addedCount">0</div>
+        <div class="button-row">
+            <button class="download-btn" onclick="downloadAddedPDF()">⬇ Download</button>
+            <button class="share-btn" onclick="shareAddedPDF()">🔗 Share</button>
+        </div>
+    </div>
 
 </div>
 
 <div class="footer">
-
-NF Railway Employees Union
-
-<br>
-
+NF Railway Employees Union<br>
 App Created By Gobind Sharma
-
 </div>
 
 </div>
@@ -813,68 +599,45 @@ let removedEmployees = [];
 let addedEmployees = [];
 let latestMonthName = "";
 
-// Promoted to Global Scope for Search Functionality to access them
 let globalOldMap = new Map();
 let globalNewMap = new Map();
 
 function showToast(message,type='info'){
-
-    const toast =
-    document.getElementById('toast');
-
+    const toast = document.getElementById('toast');
     toast.innerHTML = message;
-
     if(type === 'success'){
         toast.style.background = 'linear-gradient(135deg,#059669,#10b981)';
-    }
-    else if(type === 'error'){
+    } else if(type === 'error'){
         toast.style.background = 'linear-gradient(135deg,#dc2626,#ef4444)';
-    }
-    else{
+    } else{
         toast.style.background = 'linear-gradient(135deg,#111827,#1f2937)';
     }
-
     toast.style.display = 'block';
-
     clearTimeout(window.toastTimer);
     window.toastTimer = setTimeout(()=>{
         toast.style.display = 'none';
     },3500);
-
 }
 
 function showFileName(input,id){
-
     const fileName = document.getElementById(id);
-
     if(input.files.length > 0){
         fileName.innerHTML = "✅ " + input.files[0].name;
-        input.parentElement
-        .querySelector('.upload-ui')
-        .classList.add('file-success');
+        input.parentElement.querySelector('.upload-ui').classList.add('file-success');
     }
-
 }
 
 function getMonthValue(fileName){
-
     const months = {
         jan:1, feb:2, mar:3, apr:4, may:5, jun:6,
         jul:7, aug:8, sep:9, oct:10, nov:11, dec:12
     };
-
     const regex = /EU\s+([A-Za-z]+)\s+(\d{4})/i;
     const match = fileName.match(regex);
-
-    if(!match){
-        return null;
-    }
-
+    if(!match){ return null; }
     const month = months[match[1].substring(0,3).toLowerCase()];
     const year = parseInt(match[2]);
-
     return (year * 100) + month;
-
 }
 
 function extractMonthYearFromFileName(fileName){
@@ -885,11 +648,8 @@ function extractMonthYearFromFileName(fileName){
 }
 
 async function readExcel(file){
-
     return new Promise((resolve,reject)=>{
-
         const reader = new FileReader();
-
         reader.onload = function(e){
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data,{type:'array'});
@@ -898,15 +658,12 @@ async function readExcel(file){
             const json = XLSX.utils.sheet_to_json(worksheet, {header:1});
             resolve(json);
         };
-
         reader.onerror = reject;
         reader.readAsArrayBuffer(file);
     });
-
 }
 
 async function compareFiles(){
-
     const oldFile = document.getElementById('oldFile').files[0];
     const newFile = document.getElementById('newFile').files[0];
 
@@ -930,7 +687,6 @@ async function compareFiles(){
 
     document.getElementById('loading').style.display='block';
     
-    // Clear previous search and result UI during re-processing
     document.getElementById('searchSection').style.display = 'none';
     document.getElementById('searchResults').innerHTML = '';
     document.getElementById('searchInput').value = '';
@@ -938,7 +694,6 @@ async function compareFiles(){
     const oldData = await readExcel(oldFile);
     const newData = await readExcel(newFile);
 
-    // Clear and populate Global Maps
     globalOldMap.clear();
     globalNewMap.clear();
 
@@ -983,24 +738,19 @@ async function compareFiles(){
     document.getElementById('addedCount').innerText = addedEmployees.length;
     document.getElementById('totalMembers').innerText = globalNewMap.size;
     document.getElementById('loading').style.display='none';
-    
     document.getElementById('resultBox').style.display='flex';
-    
-    // Unhide the Search Section below Compare button once files are processed
     document.getElementById('searchSection').style.display='block';
 
     showToast('✅ Files compared successfully', 'success');
-
 }
 
 // ==========================================
-// NEW SEARCH FUNCTIONALITY
+// SEARCH FUNCTIONALITY
 // ==========================================
 function searchEmployee() {
     const query = document.getElementById('searchInput').value.toLowerCase().trim();
     const resultsContainer = document.getElementById('searchResults');
     
-    // Clear previous results
     resultsContainer.innerHTML = '';
 
     if (!query) {
@@ -1008,16 +758,14 @@ function searchEmployee() {
         return;
     }
 
-    const matches = new Map(); // Use map to deduplicate by EmpNo
+    const matches = new Map();
 
-    // 1. Search in New Sheet (Active Members -> Yes)
     globalNewMap.forEach((val, key) => {
         if (key.toLowerCase().includes(query) || val.empName.toLowerCase().includes(query)) {
             matches.set(key, { empNo: key, empName: val.empName, isMember: true });
         }
     });
 
-    // 2. Search in Old Sheet for those not already found (Removed Members -> No)
     globalOldMap.forEach((val, key) => {
         if (key.toLowerCase().includes(query) || val.empName.toLowerCase().includes(query)) {
             if (!matches.has(key)) {
@@ -1026,7 +774,6 @@ function searchEmployee() {
         }
     });
 
-    // 3. Render Results
     if (matches.size === 0) {
         resultsContainer.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:10px 0;">No matching employees found in either file.</div>';
         return;
@@ -1052,7 +799,12 @@ function searchEmployee() {
     });
 }
 
-// Add Enter key support for search input
+function clearSearchUI() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('searchInput').focus();
+}
+
 document.getElementById("searchInput").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
@@ -1061,13 +813,14 @@ document.getElementById("searchInput").addEventListener("keypress", function(eve
 });
 
 
+// ==========================================
+// PDF GENERATION
+// ==========================================
 async function createPDFBlob(title, data){
-
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const logo = new Image();
 
-    // Fallback if logo not loaded locally immediately
     logo.src = "logo.png";
     
     return new Promise(resolve=>{
@@ -1219,9 +972,13 @@ window.addEventListener('appinstalled', () => {
     showToast('✅ App Installed Successfully!', 'success');
 });
 
+// We register the new Service Worker to activate caching fix
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(err => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+            // Check for updates to sw.js on every load
+            reg.update();
+        }).catch(err => {
             console.log('SW registration failed:', err);
         });
     });
