@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Employees Union Member Checker
+</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Union Checker">
+<link rel="apple-touch-icon" href="logo.png">
+<meta name="theme-color" content="#2563eb">
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:
+    Arial,sans-serif;
+
+    background:
+    radial-gradient(
+    circle at top,
+    #1e3a8a 0%,
+    #0f172a 40%,
+    #020617 100%
+    );
+
+    min-height:100vh;
+
+    padding:8px;
+
+    color:white;
+
+}
+
+.container{
+
+    width:100%;
+
+    max-width:650px;
+
+    margin:auto;
+
+    background:
+    linear-gradient(
+    135deg,
+    rgba(255,255,255,0.10),
+    rgba(255,255,255,0.04)
+    );
+
+    border-radius:30px;
+
+    padding:18px;
+
+    border:
+    1px solid rgba(255,255,255,0.10);
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:
+    0 15px 50px rgba(0,0,0,0.45);
+
+}
+
+.logo-container{
+
+    text-align:center;
+
+    margin-bottom:8px;
+
+}
+
+.logo{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:contain;
+
+    border-radius:50%;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.40);
+
+}
+
+.title{
+
+    text-align:center;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    line-height:1.15;
+
+    margin-top:8px;
+
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:#cbd5e1;
+
+    font-size:14px;
+
+    margin-top:8px;
+
+    margin-bottom:18px;
+
+}
+
+.upload-box{
+
+    background:
+    rgba(255,255,255,0.06);
+
+    border-radius:24px;
+
+    padding:16px;
+
+}
+
+.file-upload{
+
+    margin-bottom:14px;
+
+}
+
+.upload-label{
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    margin-bottom:8px;
+
+    display:block;
+
+}
+
+.custom-upload{
+
+    display:block;
+
+    cursor:pointer;
+
+}
+
+.custom-upload input{
+
+    display:none;
+
+}
+
+.upload-ui{
+
+    background:
+    linear-gradient(
+    135deg,
+    #ecfdf5,
+    #d1fae5
+    );
+
+    border:
+    3px dashed #22c55e;
+
+    border-radius:24px;
+
+    padding:18px 12px;
+
+    text-align:center;
+
+    transition:0.3s;
+
+}
+
+.upload-ui:hover{
+
+    transform:scale(1.01);
+
+}
+
+.upload-icon{
+
+    font-size:34px;
+
+    margin-bottom:8px;
+
+}
+
+.upload-text{
+
+    color:#0f172a;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.file-name{
+
+    color:#475569;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.file-success{
+
+    border-color:#16a34a !important;
+
+    background:
+    linear-gradient(
+    135deg,
+    #dcfce7,
+    #bbf7d0
+    ) !important;
+
+}
+
+.compare-btn{
+
+    width:100%;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:15px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #06b6d4
+    );
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 10px 25px rgba(37,99,235,0.35);
+
+}
+
+/* =======================================
+   NEW SEARCH UI STYLES
+   ======================================= */
+.search-section {
+    display: none; /* Hidden until compare is clicked */
+    margin-top: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    padding: 16px;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.search-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.search-input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.search-input:focus {
+    border-color: #38bdf8;
+}
+
+.search-input::placeholder {
+    color: #94a3b8;
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 0 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+    margin-top: 12px;
+    padding-right: 4px;
+}
+
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+}
+
+.search-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.emp-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.emp-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: white;
+}
+
+.emp-no {
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.status-yes {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-no {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.result-box{
+    margin-top:14px;
+    display:none;
+    flex-direction:column;
+    gap:12px;
+}
+
+.card{
+    background:
+    linear-gradient(
+    135deg,
+    rgba(255,255,255,0.10),
+    rgba(255,255,255,0.05)
+    );
+    border-radius:22px;
+    padding:14px;
+    border:
+    1px solid rgba(255,255,255,0.10);
+    box-shadow:
+    0 8px 25px rgba(0,0,0,0.20);
+}
+
+.card-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:4px;
+}
+
+.card-icon{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    color:white;
+    font-weight:bold;
+}
+
+.blue{
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
+}
+
+.red{
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+}
+
+.green{
+    background: linear-gradient(135deg, #16a34a, #4ade80);
+}
+
+.card-title{
+    font-size:15px;
+    font-weight:700;
+    line-height:1.2;
+}
+
+.count{
+    font-size:40px;
+    font-weight:900;
+    color:#38bdf8;
+    margin-left:56px;
+    margin-bottom:10px;
+    line-height:1;
+}
+
+.button-row{
+    display:flex;
+    gap:8px;
+}
+
+.download-btn{
+    flex:1;
+    border:none;
+    border-radius:14px;
+    padding:11px;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color:white;
+    font-size:14px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    cursor:pointer;
+    box-shadow: 0 8px 20px rgba(34,197,94,0.35);
+}
+
+.share-btn{
+    width:105px;
+    border:none;
+    border-radius:14px;
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    color:white;
+    font-size:14px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    cursor:pointer;
+    box-shadow: 0 8px 20px rgba(59,130,246,0.35);
+}
+
+.loading{
+    display:none;
+    text-align:center;
+    margin-top:16px;
+    font-size:17px;
+    font-weight:700;
+}
+
+.footer{
+    text-align:center;
+    margin-top:18px;
+    color:#cbd5e1;
+    font-size:12px;
+    line-height:1.6;
+}
+
+#toast{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background: linear-gradient(135deg, #111827, #1f2937);
+    padding:14px 20px;
+    border-radius:18px;
+    color:white;
+    font-weight:700;
+    z-index:9999;
+    display:none;
+    min-width:260px;
+    text-align:center;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.40);
+}
+
+.install-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 800;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    cursor: pointer;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s ease;
+}
+
+.install-fab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo-container">
+
+<img src="logo.png"
+class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCI+PGNpcmNsZSBjeD0iNDUiIGN5PSI0NSIgcj0iNDUiIGZpbGw9IiM0NzU1NjkiLz48L3N2Zz4='">
+
+</div>
+
+<div class="title">
+
+Employees Union Member Checker
+
+</div>
+
+<div class="subtitle">
+
+Compare Monthly Union Member XLSX Files
+
+</div>
+
+<div class="upload-box">
+
+<div class="file-upload">
+
+<label class="upload-label">
+
+OLD Month XLSX File
+
+</label>
+
+<label class="custom-upload">
+
+<input type="file"
+id="oldFile"
+accept=".xlsx"
+onchange="showFileName(this,'oldFileName')">
+
+<div class="upload-ui">
+
+<div class="upload-icon">
+📁
+</div>
+
+<div class="upload-text">
+Tap to Upload Old File
+</div>
+
+<div class="file-name"
+id="oldFileName">
+No file selected
+</div>
+
+</div>
+
+</label>
+
+</div>
+
+<div class="file-upload">
+
+<label class="upload-label">
+
+NEW Month XLSX File
+
+</label>
+
+<label class="custom-upload">
+
+<input type="file"
+id="newFile"
+accept=".xlsx"
+onchange="showFileName(this,'newFileName')">
+
+<div class="upload-ui">
+
+<div class="upload-icon">
+📄
+</div>
+
+<div class="upload-text">
+Tap to Upload New File
+</div>
+
+<div class="file-name"
+id="newFileName">
+No file selected
+</div>
+
+</div>
+
+</label>
+
+</div>
+
+<button class="compare-btn"
+onclick="compareFiles()">
+
+📑 Compare Files
+
+</button>
+
+</div>
+
+<div class="search-section" id="searchSection">
+    <div class="search-input-group">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by Name or Emp No...">
+        <button class="search-btn" onclick="searchEmployee()">🔍 Search</button>
+    </div>
+    <div class="search-results" id="searchResults">
+        </div>
+</div>
+
+<div class="loading"
+id="loading">
+
+Processing Files...
+
+</div>
+
+<div class="result-box"
+id="resultBox">
+
+<div class="card">
+
+<div class="card-header">
+
+<div class="card-icon blue">
+👥
+</div>
+
+<div class="card-title">
+Current Total Members
+</div>
+
+</div>
+
+<div class="count"
+id="totalMembers">
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-header">
+
+<div class="card-icon red">
+➖
+</div>
+
+<div class="card-title">
+Removed Employees
+</div>
+
+</div>
+
+<div class="count"
+id="removedCount">
+0
+</div>
+
+<div class="button-row">
+
+<button class="download-btn"
+onclick="downloadRemovedPDF()">
+
+⬇ Download
+
+</button>
+
+<button class="share-btn"
+onclick="shareRemovedPDF()">
+
+🔗 Share
+
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-header">
+
+<div class="card-icon green">
+➕
+</div>
+
+<div class="card-title">
+New Employees Added
+</div>
+
+</div>
+
+<div class="count"
+id="addedCount">
+0
+</div>
+
+<div class="button-row">
+
+<button class="download-btn"
+onclick="downloadAddedPDF()">
+
+⬇ Download
+
+</button>
+
+<button class="share-btn"
+onclick="shareAddedPDF()">
+
+🔗 Share
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+NF Railway Employees Union
+
+<br>
+
+App Created By Gobind Sharma
+
+</div>
+
+</div>
+
+<div id="toast"></div>
+
+<button id="installAppBtn" class="install-fab">
+    📲 Install App
+</button>
+
+<script>
+
+let removedEmployees = [];
+let addedEmployees = [];
+let latestMonthName = "";
+
+// Promoted to Global Scope for Search Functionality to access them
+let globalOldMap = new Map();
+let globalNewMap = new Map();
+
+function showToast(message,type='info'){
+
+    const toast =
+    document.getElementById('toast');
+
+    toast.innerHTML = message;
+
+    if(type === 'success'){
+        toast.style.background = 'linear-gradient(135deg,#059669,#10b981)';
+    }
+    else if(type === 'error'){
+        toast.style.background = 'linear-gradient(135deg,#dc2626,#ef4444)';
+    }
+    else{
+        toast.style.background = 'linear-gradient(135deg,#111827,#1f2937)';
+    }
+
+    toast.style.display = 'block';
+
+    clearTimeout(window.toastTimer);
+    window.toastTimer = setTimeout(()=>{
+        toast.style.display = 'none';
+    },3500);
+
+}
+
+function showFileName(input,id){
+
+    const fileName = document.getElementById(id);
+
+    if(input.files.length > 0){
+        fileName.innerHTML = "✅ " + input.files[0].name;
+        input.parentElement
+        .querySelector('.upload-ui')
+        .classList.add('file-success');
+    }
+
+}
+
+function getMonthValue(fileName){
+
+    const months = {
+        jan:1, feb:2, mar:3, apr:4, may:5, jun:6,
+        jul:7, aug:8, sep:9, oct:10, nov:11, dec:12
+    };
+
+    const regex = /EU\s+([A-Za-z]+)\s+(\d{4})/i;
+    const match = fileName.match(regex);
+
+    if(!match){
+        return null;
+    }
+
+    const month = months[match[1].substring(0,3).toLowerCase()];
+    const year = parseInt(match[2]);
+
+    return (year * 100) + month;
+
+}
+
+function extractMonthYearFromFileName(fileName){
+    const regex = /EU\s+([A-Za-z]+)\s+(\d{4})/i;
+    const match = fileName.match(regex);
+    if(!match){ return null; }
+    return { monthName:match[1], year:match[2] };
+}
+
+async function readExcel(file){
+
+    return new Promise((resolve,reject)=>{
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data,{type:'array'});
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const json = XLSX.utils.sheet_to_json(worksheet, {header:1});
+            resolve(json);
+        };
+
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
+
+}
+
+async function compareFiles(){
+
+    const oldFile = document.getElementById('oldFile').files[0];
+    const newFile = document.getElementById('newFile').files[0];
+
+    if(!oldFile || !newFile){
+        showToast("⚠️ Please upload both XLSX files", 'error');
+        return;
+    }
+
+    const oldMonthValue = getMonthValue(oldFile.name);
+    const newMonthValue = getMonthValue(newFile.name);
+
+    if(oldMonthValue && newMonthValue && oldMonthValue > newMonthValue){
+        showToast("⚠️ Wrong File Order! Upload older month first.", "error");
+        return;
+    }
+
+    const latestData = extractMonthYearFromFileName(newFile.name);
+    if(latestData){
+        latestMonthName = latestData.monthName + " " + latestData.year;
+    }
+
+    document.getElementById('loading').style.display='block';
+    
+    // Clear previous search and result UI during re-processing
+    document.getElementById('searchSection').style.display = 'none';
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('searchInput').value = '';
+
+    const oldData = await readExcel(oldFile);
+    const newData = await readExcel(newFile);
+
+    // Clear and populate Global Maps
+    globalOldMap.clear();
+    globalNewMap.clear();
+
+    oldData.forEach(row=>{
+        const empNo = row[5];
+        const empName = row[6];
+        if(empNo && empName){
+            globalOldMap.set(
+                String(empNo).trim(),
+                { empNo:String(empNo).trim(), empName:String(empName).trim() }
+            );
+        }
+    });
+
+    newData.forEach(row=>{
+        const empNo = row[5];
+        const empName = row[6];
+        if(empNo && empName){
+            globalNewMap.set(
+                String(empNo).trim(),
+                { empNo:String(empNo).trim(), empName:String(empName).trim() }
+            );
+        }
+    });
+
+    removedEmployees = [];
+    addedEmployees = [];
+
+    globalOldMap.forEach((value,key)=>{
+        if(!globalNewMap.has(key)){
+            removedEmployees.push(value);
+        }
+    });
+
+    globalNewMap.forEach((value,key)=>{
+        if(!globalOldMap.has(key)){
+            addedEmployees.push(value);
+        }
+    });
+
+    document.getElementById('removedCount').innerText = removedEmployees.length;
+    document.getElementById('addedCount').innerText = addedEmployees.length;
+    document.getElementById('totalMembers').innerText = globalNewMap.size;
+    document.getElementById('loading').style.display='none';
+    
+    document.getElementById('resultBox').style.display='flex';
+    
+    // Unhide the Search Section below Compare button once files are processed
+    document.getElementById('searchSection').style.display='block';
+
+    showToast('✅ Files compared successfully', 'success');
+
+}
+
+// ==========================================
+// NEW SEARCH FUNCTIONALITY
+// ==========================================
+function searchEmployee() {
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('searchResults');
+    
+    // Clear previous results
+    resultsContainer.innerHTML = '';
+
+    if (!query) {
+        showToast("⚠️ Please enter an Employee Name or Number", "error");
+        return;
+    }
+
+    const matches = new Map(); // Use map to deduplicate by EmpNo
+
+    // 1. Search in New Sheet (Active Members -> Yes)
+    globalNewMap.forEach((val, key) => {
+        if (key.toLowerCase().includes(query) || val.empName.toLowerCase().includes(query)) {
+            matches.set(key, { empNo: key, empName: val.empName, isMember: true });
+        }
+    });
+
+    // 2. Search in Old Sheet for those not already found (Removed Members -> No)
+    globalOldMap.forEach((val, key) => {
+        if (key.toLowerCase().includes(query) || val.empName.toLowerCase().includes(query)) {
+            if (!matches.has(key)) {
+                matches.set(key, { empNo: key, empName: val.empName, isMember: false });
+            }
+        }
+    });
+
+    // 3. Render Results
+    if (matches.size === 0) {
+        resultsContainer.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:10px 0;">No matching employees found in either file.</div>';
+        return;
+    }
+
+    matches.forEach((data) => {
+        const card = document.createElement('div');
+        card.className = 'search-card';
+        
+        const statusClass = data.isMember ? 'status-yes' : 'status-no';
+        const statusText = data.isMember ? 'Membership: YES' : 'Membership: NO';
+
+        card.innerHTML = `
+            <div class="emp-info">
+                <div class="emp-name">${data.empName}</div>
+                <div class="emp-no">Emp No: ${data.empNo}</div>
+            </div>
+            <div class="status-badge ${statusClass}">
+                ${statusText}
+            </div>
+        `;
+        resultsContainer.appendChild(card);
+    });
+}
+
+// Add Enter key support for search input
+document.getElementById("searchInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        searchEmployee();
+    }
+});
+
+
+async function createPDFBlob(title, data){
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const logo = new Image();
+
+    // Fallback if logo not loaded locally immediately
+    logo.src = "logo.png";
+    
+    return new Promise(resolve=>{
+        logo.onload = function(){
+            renderPDF(doc, logo, title, data);
+            resolve(doc.output('blob'));
+        };
+        logo.onerror = function() {
+            renderPDF(doc, null, title, data);
+            resolve(doc.output('blob'));
+        }
+    });
+}
+
+function renderPDF(doc, logo, title, data) {
+    doc.setFillColor(37,99,235);
+    doc.rect(0, 0, 210, 42, 'F');
+
+    if (logo) {
+        doc.addImage(logo, 'PNG', 12, 7, 24, 24);
+    }
+
+    doc.setTextColor(255,255,255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
+    doc.text("Employees Union", 44, 18);
+    doc.setFontSize(16);
+    doc.text("N.F. Railway", 44, 29);
+
+    doc.setFillColor(248,250,252);
+    doc.roundedRect(14, 54, 182, 30, 5, 5, 'F');
+    doc.setDrawColor(220,220,220);
+    doc.roundedRect(14, 54, 182, 30, 5, 5);
+    
+    doc.setTextColor(37,99,235);
+    doc.setFontSize(20);
+    doc.text(title, 105, 66, {align:'center'});
+
+    doc.setTextColor(15,23,42);
+    doc.setFontSize(13);
+    doc.text("Month: " + latestMonthName, 22, 78);
+    doc.text("Total Members: " + data.length, 132, 78);
+
+    const tableData = data.map((emp,index)=>[
+        index + 1,
+        emp.empName,
+        emp.empNo
+    ]);
+
+    doc.autoTable({
+        head:[['S.No.', 'Employee Name', 'Employee Number']],
+        body:tableData,
+        startY:92,
+        styles:{ fontSize:10, cellPadding:5, valign:'middle' },
+        headStyles:{ fillColor:[37,99,235], textColor:[255,255,255], fontStyle:'bold' },
+        alternateRowStyles:{ fillColor:[245,247,250] }
+    });
+
+    doc.setFillColor(37,99,235);
+    doc.rect(0, 285, 210, 12, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(10);
+    doc.text("NF Railway Employees Union", 12, 292);
+    doc.text("App Created By Gobind Sharma", 132, 292);
+}
+
+async function downloadRemovedPDF(){
+    if(removedEmployees.length === 0){
+        showToast("No removed employees found", "error");
+        return;
+    }
+    const blob = await createPDFBlob("Removed Members List", removedEmployees);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "Removed_Members_" + latestMonthName + ".pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+async function downloadAddedPDF(){
+    if(addedEmployees.length === 0){
+        showToast("No new employees found", "error");
+        return;
+    }
+    const blob = await createPDFBlob("Newly Added Members List", addedEmployees);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "New_Members_" + latestMonthName + ".pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+async function shareRemovedPDF(){
+    if(removedEmployees.length === 0){
+        showToast("No removed employees found", "error");
+        return;
+    }
+    const blob = await createPDFBlob("Removed Members List", removedEmployees);
+    const file = new File([blob], "Removed_Members_" + latestMonthName + ".pdf", { type:'application/pdf' });
+
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({ files:[file], title: "Removed Members List" });
+    } else {
+        showToast("Sharing not supported", "error");
+    }
+}
+
+async function shareAddedPDF(){
+    if(addedEmployees.length === 0){
+        showToast("No new employees found", "error");
+        return;
+    }
+    const blob = await createPDFBlob("Newly Added Members List", addedEmployees);
+    const file = new File([blob], "New_Members_" + latestMonthName + ".pdf", { type:'application/pdf' });
+
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({ files:[file], title: "New Members List" });
+    } else {
+        showToast("Sharing not supported", "error");
+    }
+}
+
+// ==========================================
+// PWA Installation Scripts
+// ==========================================
+
+let deferredPrompt;
+const installBtn = document.getElementById('installAppBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'flex';
+});
+
+installBtn.addEventListener('click', async () => {
+    installBtn.style.display = 'none';
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+});
+
+window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    showToast('✅ App Installed Successfully!', 'success');
+});
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+            console.log('SW registration failed:', err);
+        });
+    });
+}
+
+</script>
+
+</body>
+
+</html>
