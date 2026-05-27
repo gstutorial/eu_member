@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<title>Employees Union Member Checker</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Union Checker">
+<link rel="apple-touch-icon" href="logo.png">
+<meta name="theme-color" content="#2563eb">
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial,sans-serif;
+    background: radial-gradient(circle at top, #1e3a8a 0%, #0f172a 40%, #020617 100%);
+    min-height:100vh;
+    padding:8px;
+    color:white;
+}
+
+.container{
+    width:100%;
+    max-width:650px;
+    margin:auto;
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+    border-radius:30px;
+    padding:18px;
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter:blur(20px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.45);
+}
+
+.logo-container{
+    text-align:center;
+    margin-bottom:8px;
+}
+
+.logo{
+    width:90px;
+    height:90px;
+    object-fit:contain;
+    border-radius:50%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.40);
+}
+
+.title{
+    text-align:center;
+    font-size:28px;
+    font-weight:800;
+    line-height:1.15;
+    margin-top:8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#cbd5e1;
+    font-size:14px;
+    margin-top:8px;
+    margin-bottom:18px;
+}
+
+.upload-box{
+    background: rgba(255,255,255,0.06);
+    border-radius:24px;
+    padding:16px;
+}
+
+.file-upload{
+    margin-bottom:14px;
+}
+
+.upload-label{
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:8px;
+    display:block;
+}
+
+.custom-upload{
+    display:block;
+    cursor:pointer;
+}
+
+.custom-upload input{
+    display:none;
+}
+
+.upload-ui{
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 3px dashed #22c55e;
+    border-radius:24px;
+    padding:18px 12px;
+    text-align:center;
+    transition:0.3s;
+}
+
+.upload-ui:hover{
+    transform:scale(1.01);
+}
+
+.upload-icon-img {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 8px;
+    object-fit: contain;
+}
+
+.upload-text{
+    color:#0f172a;
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.file-name{
+    color:#475569;
+    font-size:13px;
+    font-weight:600;
+}
+
+.file-success{
+    border-color:#16a34a !important;
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0) !important;
+}
+
+.compare-btn{
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:15px;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    color:white;
+    font-size:18px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow: 0 10px 25px rgba(37,99,235,0.35);
+}
+
+/* =======================================
+   SEARCH UI STYLES
+   ======================================= */
+.search-section {
+    display: none; 
+    margin-top: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    padding: 16px;
+    animation: fadeIn 0.4s ease-in-out;
+    width: 100%;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.search-input-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 50px;
+    padding: 5px 5px 5px 16px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    min-width: 0; 
+}
+
+.search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 16px;
+    outline: none;
+    padding: 0;
+    margin-right: 8px;
+    font-family: inherit;
+    min-width: 0; 
+    width: 100%;
+}
+
+.search-input::placeholder {
+    color: #a0aec0;
+    font-weight: 500;
+}
+
+.search-btn {
+    background: #6d28d9;
+    border: none;
+    border-radius: 50px;
+    width: 40px; 
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0; 
+    transition: transform 0.2s;
+}
+
+.search-btn:active {
+    transform: scale(0.92);
+}
+
+.clear-search-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    transition: 0.2s;
+    opacity: 0.8;
+    flex-shrink: 0; 
+}
+
+.clear-search-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+    margin-top: 16px;
+    padding-right: 4px;
+}
+
+.search-results::-webkit-scrollbar { width: 6px; }
+.search-results::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+.search-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+}
+
+.emp-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: white;
+    white-space: normal; 
+    word-break: break-word; 
+    line-height: 1.4;
+}
+
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.emp-no {
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.status-yes { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+.status-no { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+/* =======================================
+   COLLAPSIBLE CARDS UI & LISTS
+   ======================================= */
+.result-box{
+    margin-top:14px;
+    display:none;
+    flex-direction:column;
+    gap:12px;
+}
+
+.card{
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+    border-radius:22px;
+    padding:14px;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.20);
+}
+
+.card-header-toggle{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    user-select:none;
+    padding:4px 0;
+}
+
+.header-left, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-icon{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    flex-shrink: 0;
+}
+
+.blue{ background: linear-gradient(135deg, #2563eb, #60a5fa); }
+.red{ background: linear-gradient(135deg, #dc2626, #ef4444); }
+.green{ background: linear-gradient(135deg, #16a34a, #4ade80); }
+
+.card-title{
+    font-size:15px;
+    font-weight:700;
+    line-height:1.2;
+}
+
+.count-small{
+    font-size:24px;
+    font-weight:900;
+    color:#38bdf8;
+}
+
+.toggle-arrow{
+    color: #cbd5e1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform 0.3s ease;
+}
+
+.rotate-arrow{
+    transform: rotate(180deg);
+}
+
+.card-collapsible {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.list-container {
+    max-height: 250px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 4px;
+}
+
+.list-container::-webkit-scrollbar { width: 6px; }
+.list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+.list-item {
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.list-item-name { 
+    font-size: 14px; 
+    font-weight: 700; 
+    color: white; 
+    word-break: break-word; 
+}
+
+.list-item-no { 
+    font-size: 12px; 
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.button-row{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+}
+
+.download-btn{
+    flex:1;
+    border:none;
+    border-radius:14px;
+    padding:11px;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color:white;
+    font-size:14px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    cursor:pointer;
+    box-shadow: 0 8px 20px rgba(34,197,94,0.35);
+}
+
+.share-btn{
+    width:105px;
+    border:none;
+    border-radius:14px;
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    color:white;
+    font-size:14px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    cursor:pointer;
+    box-shadow: 0 8px 20px rgba(59,130,246,0.35);
+}
+
+.loading{
+    display:none;
+    text-align:center;
+    margin-top:16px;
+    font-size:17px;
+    font-weight:700;
+}
+
+.footer{
+    text-align:center;
+    margin-top:18px;
+    color:#cbd5e1;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.creator-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.creator-logo {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#toast{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background: linear-gradient(135deg, #111827, #1f2937);
+    padding:14px 20px;
+    border-radius:18px;
+    color:white;
+    font-weight:700;
+    z-index:9999;
+    display:none;
+    min-width:260px;
+    text-align:center;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.40);
+}
+
+.install-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 800;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    cursor: pointer;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s ease;
+}
+
+.install-fab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo-container">
+<img src="logo.png" class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCI+PGNpcmNsZSBjeD0iNDUiIGN5PSI0NSIgcj0iNDUiIGZpbGw9IiM0NzU1NjkiLz48L3N2Zz4='">
+</div>
+
+<div class="title">
+Employees Union Member Checker
+</div>
+
+<div class="subtitle">
+Compare Monthly Union Member XLSX Files
+</div>
+
+<div class="upload-box">
+    <div class="file-upload">
+        <label class="upload-label">OLD Month XLSX File</label>
+        <label class="custom-upload">
+            <input type="file" id="oldFile" accept=".xlsx" onchange="showFileName(this,'oldFileName')">
+            <div class="upload-ui">
+                <img src="sheets.png" alt="Sheets Icon" class="upload-icon-img" onerror="this.style.display='none'">
+                <div class="upload-text">Tap to Upload Old File</div>
+                <div class="file-name" id="oldFileName">No file selected</div>
+            </div>
+        </label>
+    </div>
+
+    <div class="file-upload">
+        <label class="upload-label">NEW Month XLSX File</label>
+        <label class="custom-upload">
+            <input type="file" id="newFile" accept=".xlsx" onchange="showFileName(this,'newFileName')">
+            <div class="upload-ui">
+                <img src="sheets.png" alt="Sheets Icon" class="upload-icon-img" onerror="this.style.display='none'">
+                <div class="upload-text">Tap to Upload New File</div>
+                <div class="file-name" id="newFileName">No file selected</div>
+            </div>
+        </label>
+    </div>
+
+    <button class="compare-btn" onclick="compareFiles()">
+        📑 Compare Files
+    </button>
+</div>
+
+<div class="search-section" id="searchSection">
+    <div class="search-wrapper">
+        <div class="search-input-group">
+            <input type="text" id="searchInput" class="search-input" placeholder="Type to search..">
+            <button class="search-btn" onclick="searchEmployee()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+        </div>
+        <button class="clear-search-btn" onclick="clearSearchUI()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="search-results" id="searchResults">
+        </div>
+</div>
+
+<div class="loading" id="loading">
+Processing Files...
+</div>
+
+<div class="result-box" id="resultBox">
+
+    <div class="card">
+        <div class="card-header-toggle" onclick="toggleList('total-members-list', 'total-arrow')">
+            <div class="header-left">
+                <div class="card-icon blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <div class="card-title">Total Members</div>
+            </div>
+            <div class="header-right">
+                <div class="count-small" id="totalMembers">0</div>
+                <div class="toggle-arrow" id="total-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-collapsible" id="total-members-list">
+            <div class="list-container" id="list-total"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header-toggle" onclick="toggleList('removed-members-list', 'removed-arrow')">
+            <div class="header-left">
+                <div class="card-icon red">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="18" y1="11" x2="24" y2="11"></line>
+                    </svg>
+                </div>
+                <div class="card-title">Removed Employees</div>
+            </div>
+            <div class="header-right">
+                <div class="count-small" id="removedCount">0</div>
+                <div class="toggle-arrow" id="removed-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-collapsible" id="removed-members-list">
+            <div class="list-container" id="list-removed"></div>
+        </div>
+        <div class="button-row">
+            <button class="download-btn" onclick="downloadRemovedPDF()">⬇ Download</button>
+            <button class="share-btn" onclick="shareRemovedPDF()">🔗 Share</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header-toggle" onclick="toggleList('added-members-list', 'added-arrow')">
+            <div class="header-left">
+                <div class="card-icon green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                </div>
+                <div class="card-title">Employees Added</div>
+            </div>
+            <div class="header-right">
+                <div class="count-small" id="addedCount">0</div>
+                <div class="toggle-arrow" id="added-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-collapsible" id="added-members-list">
+            <div class="list-container" id="list-added"></div>
+        </div>
+        <div class="button-row">
+            <button class="download-btn" onclick="downloadAddedPDF()">⬇ Download</button>
+            <button class="share-btn" onclick="shareAddedPDF()">🔗 Share</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    NF Railway Employees Union<br>
+    <div class="creator-box">
+        <img src="gs.png" class="creator-logo" onerror="this.style.display='none'">
+        <span>App Created By Gobind Sharma</span>
+    </div>
+</div>
+
+</div>
+
+<div id="toast"></div>
+
+<button id="installAppBtn" class="install-fab">
+    📲 Install App
+</button>
+
+<script>
+
+let removedEmployees = [];
+let addedEmployees = [];
+let latestMonthName = "";
+
+let globalOldMap = new Map();
+let globalNewMap = new Map();
+
+function showToast(message,type='info'){
+    const toast = document.getElementById('toast');
+    toast.innerHTML = message;
+    if(type === 'success'){
+        toast.style.background = 'linear-gradient(135deg,#059669,#10b981)';
+    } else if(type === 'error'){
+        toast.style.background = 'linear-gradient(135deg,#dc2626,#ef4444)';
+    } else{
+        toast.style.background = 'linear-gradient(135deg,#111827,#1f2937)';
+    }
+    toast.style.display = 'block';
+    clearTimeout(window.toastTimer);
+    window.toastTimer = setTimeout(()=>{
+        toast.style.display = 'none';
+    },3500);
+}
+
+function showFileName(input,id){
+    const fileName = document.getElementById(id);
+    if(input.files.length > 0){
+        fileName.innerHTML = "✅ " + input.files[0].name;
+        input.parentElement.querySelector('.upload-ui').classList.add('file-success');
+    }
+}
+
+function getMonthValue(fileName){
+    const months = {
+        jan:1, feb:2, mar:3, apr:4, may:5, jun:6,
+        jul:7, aug:8, sep:9, oct:10, nov:11, dec:12
+    };
+    const regex = /EU\s+([A-Za-z]+)\s+(\d{4})/i;
+    const match = fileName.match(regex);
+    if(!match){ return null; }
+    const month = months[match[1].substring(0,3).toLowerCase()];
+    const year = parseInt(match[2]);
+    return (year * 100) + month;
+}
+
+function extractMonthYearFromFileName(fileName){
+    const regex = /EU\s+([A-Za-z]+)\s+(\d{4})/i;
+    const match = fileName.match(regex);
+    if(!match){ return null; }
+    return { monthName:match[1], year:match[2] };
+}
+
+async function readExcel(file){
+    return new Promise((resolve,reject)=>{
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data,{type:'array'});
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const json = XLSX.utils.sheet_to_json(worksheet, {header:1});
+            resolve(json);
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+function generateListHTML(dataArray) {
+    if(dataArray.length === 0) return '<div style="text-align:center; color:#94a3b8; padding:10px 0;">No records found</div>';
+    return dataArray.map(emp => `
+        <div class="list-item">
+            <div class="list-item-name">${emp.empName}</div>
+            <div class="list-item-no">Emp No.: ${emp.empNo}</div>
+        </div>
+    `).join('');
+}
+
+async function compareFiles(){
+    const oldFile = document.getElementById('oldFile').files[0];
+    const newFile = document.getElementById('newFile').files[0];
+
+    if(!oldFile || !newFile){
+        showToast("⚠️ Please upload both XLSX files", 'error');
+        return;
+    }
+
+    const oldMonthValue = getMonthValue(oldFile.name);
+    const newMonthValue = getMonthValue(newFile.name);
+
+    if(oldMonthValue && newMonthValue && oldMonthValue > newMonthValue){
+        showToast("⚠️ Wrong File Order! Upload older month first.", "error");
+        return;
+    }
+
+    const latestData = extractMonthYearFromFileName(newFile.name);
+    if(latestData){
+        latestMonthName = latestData.monthName + " " + latestData.year;
+    }
+
+    document.getElementById('loading').style.display='block';
+    
+    document.getElementById('searchSection').style.display = 'none';
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('searchInput').value = '';
+
+    const oldData = await readExcel(oldFile);
+    const newData = await readExcel(newFile);
+
+    globalOldMap.clear();
+    globalNewMap.clear();
+
+    oldData.forEach((row, index) => {
+        if (index === 0) return; // Skip header row
+        const empNo = row[5];
+        const empName = row[6];
+        if (empNo && empName) {
+            const cleanEmpNo = String(empNo).trim();
+            const cleanEmpName = String(empName).trim();
+            // Prevent actual header text from being saved as data
+            if (cleanEmpNo.toLowerCase() === 'emp no' || cleanEmpNo.toLowerCase() === 'emp no.') return;
+            
+            globalOldMap.set(
+                cleanEmpNo,
+                { empNo: cleanEmpNo, empName: cleanEmpName }
+            );
+        }
+    });
+
+    newData.forEach((row, index) => {
+        if (index === 0) return; // Skip header row
+        const empNo = row[5];
+        const empName = row[6];
+        if (empNo && empName) {
+            const cleanEmpNo = String(empNo).trim();
+            const cleanEmpName = String(empName).trim();
+            // Prevent actual header text from being saved as data
+            if (cleanEmpNo.toLowerCase() === 'emp no' || cleanEmpNo.toLowerCase() === 'emp no.') return;
+
+            globalNewMap.set(
+                cleanEmpNo,
+                { empNo: cleanEmpNo, empName: cleanEmpName }
+            );
+        }
+    });
+
+    removedEmployees = [];
+    addedEmployees = [];
+    const totalMembersArray = Array.from(globalNewMap.values());
+
+    globalOldMap.forEach((value,key)=>{
+        if(!globalNewMap.has(key)){
+            removedEmployees.push(value);
+        }
+    });
+
+    globalNewMap.forEach((value,key)=>{
+        if(!globalOldMap.has(key)){
+            addedEmployees.push(value);
+        }
+    });
+
+    // Update Counts
+    document.getElementById('removedCount').innerText = removedEmployees.length;
+    document.getElementById('addedCount').innerText = addedEmployees.length;
+    document.getElementById('totalMembers').innerText = globalNewMap.size;
+    
+    // Populate internal lists
+    document.getElementById('list-total').innerHTML = generateListHTML(totalMembersArray);
+    document.getElementById('list-removed').innerHTML = generateListHTML(removedEmployees);
+    document.getElementById('list-added').innerHTML = generateListHTML(addedEmployees);
+
+    document.getElementById('loading').style.display='none';
+    document.getElementById('resultBox').style.display='flex';
+    document.getElementById('searchSection').style.display='block';
+
+    showToast('✅ Files compared successfully', 'success');
+}
+
+// ==========================================
+// CARD TOGGLE FUNCTIONALITY
+// ==========================================
+function toggleList(listId, arrowId) {
+    const list = document.getElementById(listId);
+    const arrow = document.getElementById(arrowId);
+    
+    // Check if the clicked list is currently closed
+    const isCurrentlyClosed = (list.style.display === 'none' || list.style.display === '');
+
+    // Close all lists and reset arrows first
+    const allLists = ['total-members-list', 'removed-members-list', 'added-members-list'];
+    const allArrows = ['total-arrow', 'removed-arrow', 'added-arrow'];
+    
+    allLists.forEach((id, index) => {
+        const el = document.getElementById(id);
+        const arr = document.getElementById(allArrows[index]);
+        if (el) el.style.display = 'none';
+        if (arr) arr.classList.remove('rotate-arrow');
+    });
+    
+    // If it was closed before clicking, open it now
+    if (isCurrentlyClosed) {
+        list.style.display = 'block';
+        arrow.classList.add('rotate-arrow');
+    }
+}
+
+// ==========================================
+// SEARCH FUNCTIONALITY
+// ==========================================
+function searchEmployee() {
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('searchResults');
+    
+    resultsContainer.innerHTML = '';
+
+    if (!query) {
+        showToast("⚠️ Please enter an Employee Name or Number", "error");
+        return;
+    }
+
+    const matches = new Map();
+
+    globalNewMap.forEach((val, key) => {
+        if (key.toLowerCase().includes(query) || val.empName.toLowerCase().includes(query)) {
+            matches.set(key, { empNo: key, empName: val.empName, isMember: true });
+        }
+    });
+
+    globalOldMap.forEach((val, key) => {
+        if (key.toLowerCase().includes(query) || val.empName.toLowerCase().includes(query)) {
+            if (!matches.has(key)) {
+                matches.set(key, { empNo: key, empName: val.empName, isMember: false });
+            }
+        }
+    });
+
+    if (matches.size === 0) {
+        resultsContainer.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:10px 0;">No matching employees found in either file.</div>';
+        return;
+    }
+
+    matches.forEach((data) => {
+        const card = document.createElement('div');
+        card.className = 'search-card';
+        
+        const statusClass = data.isMember ? 'status-yes' : 'status-no';
+        const statusText = data.isMember ? 'Membership: YES' : 'Membership: NO';
+
+        card.innerHTML = `
+            <div class="emp-name">${data.empName}</div>
+            <div class="card-bottom">
+                <div class="emp-no">Emp No: ${data.empNo}</div>
+                <div class="status-badge ${statusClass}">
+                    ${statusText}
+                </div>
+            </div>
+        `;
+        resultsContainer.appendChild(card);
+    });
+}
+
+function clearSearchUI() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('searchInput').focus();
+}
+
+document.getElementById("searchInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        searchEmployee();
+    }
+});
+
+
+// ==========================================
+// PDF GENERATION WITH CUSTOM GRADIENTS
+// ==========================================
+
+// Helper function to draw a linear gradient manually for jsPDF
+function addGradientToRect(doc, x, y, w, h, c1, c2) {
+    const step = 1; // 1px step for perfect smooth gradient
+    for (let i = 0; i <= w; i += step) {
+        let ratio = i / w;
+        let r = Math.round(c1[0] + (c2[0] - c1[0]) * ratio);
+        let g = Math.round(c1[1] + (c2[1] - c1[1]) * ratio);
+        let b = Math.round(c1[2] + (c2[2] - c1[2]) * ratio);
+        doc.setFillColor(r, g, b);
+        doc.rect(x + i, y, step + 0.5, h, 'F');
+    }
+}
+
+// Helper to load image as a Promise
+async function loadImage(url) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = url;
+    });
+}
+
+async function createPDFBlob(title, data){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Load both logos in parallel
+    const [logo, gsLogo] = await Promise.all([
+        loadImage("logo.png"),
+        loadImage("gs.png")
+    ]);
+    
+    renderPDF(doc, logo, gsLogo, title, data);
+    return doc.output('blob');
+}
+
+function renderPDF(doc, logo, gsLogo, title, data) {
+    // 1. TOP HEADER GRADIENT (From #2563eb to #06b6d4)
+    addGradientToRect(doc, 0, 0, 210, 42, [37, 99, 235], [6, 182, 212]);
+
+    if (logo) {
+        doc.addImage(logo, 'PNG', 12, 7, 24, 24);
+    }
+
+    doc.setTextColor(255,255,255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
+    doc.text("Employees Union", 44, 18);
+    doc.setFontSize(16);
+    doc.text("N.F. Railway", 44, 29);
+
+    doc.setFillColor(248,250,252);
+    doc.roundedRect(14, 54, 182, 30, 5, 5, 'F');
+    doc.setDrawColor(220,220,220);
+    doc.roundedRect(14, 54, 182, 30, 5, 5);
+    
+    doc.setTextColor(37,99,235);
+    doc.setFontSize(20);
+    doc.text(title, 105, 66, {align:'center'});
+
+    doc.setTextColor(15,23,42);
+    doc.setFontSize(13);
+    doc.text("Month: " + latestMonthName, 22, 78);
+    doc.text("Total Members: " + data.length, 132, 78);
+
+    const tableData = data.map((emp,index)=>[
+        index + 1,
+        emp.empName,
+        emp.empNo
+    ]);
+
+    doc.autoTable({
+        head:[['S.No.', 'Employee Name', 'Employee Number']],
+        body:tableData,
+        startY:92,
+        styles:{ fontSize:10, cellPadding:5, valign:'middle' },
+        // Set fillColor to null so default doesn't overwrite our gradient below
+        headStyles:{ fillColor: null, textColor:[255,255,255], fontStyle:'bold' },
+        alternateRowStyles:{ fillColor:[245,247,250] },
+        
+        // 2. TABLE HEADER GRADIENT HOOK
+        willDrawCell: function(data) {
+            if (data.section === 'head') {
+                // Table width is roughly 210 - (14 * 2 margins) = 182
+                let tableW = 182; 
+                let relativeX = data.cell.x - 14; 
+                
+                // Draw gradient pixel block behind the text for just this cell's slice
+                for (let i = 0; i <= data.cell.width; i += 1) {
+                    let ratio = (relativeX + i) / tableW;
+                    // Clamp ratio between 0 and 1
+                    ratio = Math.max(0, Math.min(1, ratio));
+                    let r = Math.round(37 + (6 - 37) * ratio);
+                    let g = Math.round(99 + (182 - 99) * ratio);
+                    let b = Math.round(235 + (212 - 235) * ratio);
+                    
+                    data.doc.setFillColor(r, g, b);
+                    data.doc.rect(data.cell.x + i, data.cell.y, 1.5, data.cell.height, 'F');
+                }
+            }
+        }
+    });
+
+    // 3. BOTTOM FOOTER GRADIENT
+    addGradientToRect(doc, 0, 285, 210, 12, [37, 99, 235], [6, 182, 212]);
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(10);
+    doc.text("NF Railway Employees Union", 12, 292);
+    
+    // Add App Creator and gs.png
+    doc.text("App Created By Gobind Sharma", 140, 292);
+    if (gsLogo) {
+        // Adjust coordinates depending on where you want the logo relative to the text
+        doc.addImage(gsLogo, 'PNG', 131, 288.5, 7, 7); 
+    }
+}
+
+async function downloadRemovedPDF(){
+    if(removedEmployees.length === 0){
+        showToast("No removed employees found", "error");
+        return;
+    }
+    const blob = await createPDFBlob("Removed Members List", removedEmployees);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "Removed_Members_" + latestMonthName + ".pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+async function downloadAddedPDF(){
+    if(addedEmployees.length === 0){
+        showToast("No new employees found", "error");
+        return;
+    }
+    const blob = await createPDFBlob("Newly Added Members List", addedEmployees);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "New_Members_" + latestMonthName + ".pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+async function shareRemovedPDF(){
+    if(removedEmployees.length === 0){
+        showToast("No removed employees found", "error");
+        return;
+    }
+    const blob = await createPDFBlob("Removed Members List", removedEmployees);
+    const file = new File([blob], "Removed_Members_" + latestMonthName + ".pdf", { type:'application/pdf' });
+
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({ files:[file], title: "Removed Members List" });
+    } else {
+        showToast("Sharing not supported", "error");
+    }
+}
+
+async function shareAddedPDF(){
+    if(addedEmployees.length === 0){
+        showToast("No new employees found", "error");
+        return;
+    }
+    const blob = await createPDFBlob("Newly Added Members List", addedEmployees);
+    const file = new File([blob], "New_Members_" + latestMonthName + ".pdf", { type:'application/pdf' });
+
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({ files:[file], title: "New Members List" });
+    } else {
+        showToast("Sharing not supported", "error");
+    }
+}
+
+// ==========================================
+// PWA Installation Scripts
+// ==========================================
+
+let deferredPrompt;
+const installBtn = document.getElementById('installAppBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'flex';
+});
+
+installBtn.addEventListener('click', async () => {
+    installBtn.style.display = 'none';
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+});
+
+window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    showToast('✅ App Installed Successfully!', 'success');
+});
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+            reg.update();
+        }).catch(err => {
+            console.log('SW registration failed:', err);
+        });
+    });
+}
+
+</script>
+
+</body>
+
+</html>
