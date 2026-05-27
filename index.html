@@ -303,7 +303,7 @@ body{
 .status-no { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
 
 /* =======================================
-   COLLAPSIBLE CARDS UI (NEW DESIGNS)
+   COLLAPSIBLE CARDS UI & LISTS
    ======================================= */
 .result-box{
     margin-top:14px;
@@ -395,17 +395,29 @@ body{
 .list-container::-webkit-scrollbar { width: 6px; }
 .list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
+/* MODIFIED: List items now stack name and emp no vertically */
 .list-item {
     background: rgba(0,0,0,0.2);
     border-radius: 12px;
-    padding: 12px;
+    padding: 12px 14px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
 }
 
-.list-item-name { font-size: 14px; font-weight: 700; color: white; word-break: break-word; flex:1; padding-right:10px; }
-.list-item-no { font-size: 12px; color: #cbd5e1; font-weight:bold; }
+.list-item-name { 
+    font-size: 14px; 
+    font-weight: 700; 
+    color: white; 
+    word-break: break-word; 
+}
+
+.list-item-no { 
+    font-size: 12px; 
+    color: #94a3b8; /* Lighter color */
+    font-weight: 500; /* Lighter weight */
+}
 
 .button-row{
     display:flex;
@@ -735,7 +747,7 @@ function generateListHTML(dataArray) {
     return dataArray.map(emp => `
         <div class="list-item">
             <div class="list-item-name">${emp.empName}</div>
-            <div class="list-item-no">${emp.empNo}</div>
+            <div class="list-item-no">Emp No.: ${emp.empNo}</div>
         </div>
     `).join('');
 }
