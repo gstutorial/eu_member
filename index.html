@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -37,6 +37,7 @@ body{
     min-height:100vh;
     padding:8px;
     color:white;
+    touch-action: manipulation; /* Prevents double-tap zooming */
 }
 
 .container{
@@ -938,6 +939,21 @@ function goBackToUpload() {
     // Optional: clear search field to keep things tidy
     document.getElementById('searchInput').value = '';
     document.getElementById('searchResults').innerHTML = '';
+
+    // Clear file inputs
+    const oldFileInput = document.getElementById('oldFile');
+    const newFileInput = document.getElementById('newFile');
+    
+    oldFileInput.value = '';
+    newFileInput.value = '';
+    
+    // Reset file name text
+    document.getElementById('oldFileName').innerHTML = 'No file selected';
+    document.getElementById('newFileName').innerHTML = 'No file selected';
+    
+    // Remove the green success styling
+    oldFileInput.parentElement.querySelector('.upload-ui').classList.remove('file-success');
+    newFileInput.parentElement.querySelector('.upload-ui').classList.remove('file-success');
 }
 
 // ==========================================
