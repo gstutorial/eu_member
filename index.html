@@ -1043,6 +1043,11 @@ function renderPDF(doc, logo, gsLogo, title, data) {
     doc.setFontSize(16);
     doc.text("N.F. Railway", 44, 29);
 
+    // Add App Creator text to header
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("App Created By Gobind Sharma", 200, 36, { align: 'right' });
+
     doc.setFillColor(248,250,252);
     doc.roundedRect(14, 54, 182, 30, 5, 5, 'F');
     doc.setDrawColor(220,220,220);
