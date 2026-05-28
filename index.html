@@ -81,6 +81,27 @@ body{
     margin-bottom:18px;
 }
 
+.creator-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.creator-logo {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.creator-text {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
 .upload-box{
     background: rgba(255,255,255,0.06);
     border-radius:24px;
@@ -499,21 +520,6 @@ body{
     line-height:1.6;
 }
 
-.creator-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 5px;
-}
-
-.creator-logo {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 #toast{
     position:fixed;
     top:20px;
@@ -573,7 +579,11 @@ Employees Union Member Checker
 </div>
 
 <div class="subtitle">
-Compare Monthly Union Member XLSX Files
+    Compare Monthly Union Member XLSX Files
+    <div class="creator-box">
+        <img src="gs.png" class="creator-logo" onerror="this.style.display='none'">
+        <span class="creator-text">App Created By Gobind Sharma</span>
+    </div>
 </div>
 
 <div class="upload-box" id="uploadBox">
@@ -683,8 +693,14 @@ Processing Files...
             <div class="list-container" id="list-removed"></div>
         </div>
         <div class="button-row">
-            <button class="download-btn" onclick="downloadRemovedPDF()">⬇ Download</button>
-            <button class="share-btn" onclick="shareRemovedPDF()">🔗 Share</button>
+            <button class="download-btn" onclick="downloadRemovedPDF()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download
+            </button>
+            <button class="share-btn" onclick="shareRemovedPDF()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                Share
+            </button>
         </div>
     </div>
 
@@ -712,8 +728,14 @@ Processing Files...
             <div class="list-container" id="list-added"></div>
         </div>
         <div class="button-row">
-            <button class="download-btn" onclick="downloadAddedPDF()">⬇ Download</button>
-            <button class="share-btn" onclick="shareAddedPDF()">🔗 Share</button>
+            <button class="download-btn" onclick="downloadAddedPDF()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download
+            </button>
+            <button class="share-btn" onclick="shareAddedPDF()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                Share
+            </button>
         </div>
     </div>
 
@@ -728,11 +750,7 @@ Processing Files...
 </div>
 
 <div class="footer">
-    NF Railway Employees Union<br>
-    <div class="creator-box">
-        <img src="gs.png" class="creator-logo" onerror="this.style.display='none'">
-        <span>App Created By Gobind Sharma</span>
-    </div>
+    NF Railway Employees Union
 </div>
 
 </div>
